@@ -18,12 +18,14 @@ export function Apoiar() {
   const [aviso, setAviso] = useState('')
   return (
     <>
-      <div><h1 className="tc">Apoiar o EducaBem</h1></div>
-      <Abas ativa="plano" />
-      <p className="sub txt">O EducaBem é gratuito para doar. Quem quiser pode apoiar todo mês e ganhar vantagens assim a plataforma se mantém no ar.</p>
+      <header className="apoiar-cab">
+        <h1 className="tc">Apoiar o EducaBem</h1>
+        <Abas ativa="plano" />
+        <p className="sub txt">O EducaBem é gratuito para doar. Quem quiser pode apoiar todo mês e ganhar vantagens assim a plataforma se mantém no ar.</p>
+      </header>
       <div className="planos">
         {PLANOS.map((p) => (
-          <article key={p.id} className={`plano ${p.destaque ? 'destaque' : ''}`}>
+          <article key={p.id} className={`plano ${p.destaque ? 'destaque' : ''} ${p.id === 'gratis' ? 'gratis' : ''}`}>
             {p.destaque && <span className="selo">Mais escolhido</span>}
             <span className="ic"><Icone nome={p.icone} tam={26} /></span>
             <h2>{p.nome}</h2>

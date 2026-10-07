@@ -1,11 +1,20 @@
-import { Link } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { STATUS, doacoes } from '../mock.js'
 import { Capa, Icone } from '../components/ui.jsx'
+import CancelarDoacao from '../components/CancelarDoacao.jsx'
 import mascot from '../../../assets/mascot.png'
 
 const ETAPAS = [['package', 'Registrada'], ['truck', 'A caminho'], ['bag', 'Entregue']]
 
 export default function Rastreio() {
+  const { state, pathname } = useLocation()
+  const navigate = useNavigate()
+  const [aviso, setAviso] = useState(state?.cancelada ? `Doação ${state.cancelada} cancelada.` : '')
+  // limpa o state da navegação: o aviso não reaparece ao recarregar a página
+  useEffect(() => { if (state?.cancelada) navigate(pathname, { replace: true, state: null }) }, []) // eslint-disable-line react-hooks/exhaustive-deps
+  // navegar para o mesmo lugar re-renderiza o layout (o contador do sino acompanha o aviso removido)
+  const removida = (d) => { setAviso(`Doação ${d.id} cancelada.`); navigate(pathname, { replace: true, state: null }) }
   return (
     <>
       <section className="banner">
@@ -14,6 +23,7 @@ export default function Rastreio() {
       </section>
       <section className="painel">
         <h2>Suas doações</h2>
+        {aviso && <p className="aviso-ok" role="status"><Icone nome="check" tam={18} strokeWidth={3} />{aviso}</p>}
         {doacoes.length === 0 && <div className="doacao vazio-doacao"><p>Quando você doar um livro, o acompanhamento aparece aqui.</p><Link className="btn btn-azul" to="/doar">Doar um livro</Link></div>}
         {doacoes.map((d, n) => {
           const etapa = STATUS[d.status].etapa
@@ -30,6 +40,7 @@ export default function Rastreio() {
                   <span>Registrada em {d.datas[0]}</span>
                   <div className="botoes">
                     <Link className="btn btn-azul" to={`/rastreio/${d.id}`}>Ver detalhes</Link>
+                    <CancelarDoacao d={d} curto onRemovida={removida} />
                   </div>
                 </div>
               </div>

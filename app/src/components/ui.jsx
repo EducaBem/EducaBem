@@ -1,4 +1,13 @@
+import { useEffect } from 'react'
 import { STATUS, usuario, nivelDe } from '../mock.js'
+
+// Enquanto um diálogo está aberto: o topo (sino, avatar, barra) passa para trás do fundo escuro e a página não rola por baixo.
+export function useDialogoAberto() {
+  useEffect(() => {
+    document.body.classList.add('com-dialogo')
+    return () => document.body.classList.remove('com-dialogo')
+  }, [])
+}
 
 export function Botao({ cor = 'verde', bloco, children, ...props }) {
   return <button className={`btn btn-${cor} ${bloco ? 'btn-bloco' : ''}`} {...props}>{children}</button>
@@ -82,6 +91,8 @@ const ICONES = {
   category: <path d="M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z" />,
   note: <path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9zM14 3v6h6M8 13h8M8 17h5" />,
   sprout: <path d="M12 21v-9M12 12c0-4 3-6 7-6 0 4-3 6-7 6zM12 15c0-3-2.5-5-6-5 0 3 2.5 5 6 5z" />,
+  trash: <path d="M3 6h18M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6M10 11v6M14 11v6" />,
+  info: <><circle cx="12" cy="12" r="10" /><path d="M12 16v-4M12 8h.01" /></>,
   swords: <path d="m14.5 17.5 5-5M13 19l6 2-2-6M5 5l7 7M5 5H3v2l7 7" />,
 }
 export function Icone({ nome, tam = 22, ...props }) {

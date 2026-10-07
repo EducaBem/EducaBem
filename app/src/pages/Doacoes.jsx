@@ -1,6 +1,7 @@
-import { Link, Navigate, useParams } from 'react-router-dom'
+import { Link, Navigate, useNavigate, useParams } from 'react-router-dom'
 import { STATUS, doacoes } from '../mock.js'
 import { Capa, ChipStatus, Icone } from '../components/ui.jsx'
+import CancelarDoacao from '../components/CancelarDoacao.jsx'
 
 const ETAPAS = [['package', 'Doação registrada'], ['truck', 'A caminho da instituição'], ['bag', 'Entregue na instituição']]
 
@@ -24,6 +25,7 @@ export function Historico() {
 
 export function Detalhes() {
   const { id } = useParams()
+  const navigate = useNavigate()
   const d = doacoes.find((x) => x.id === id)
   if (!d) return <Navigate to="/rastreio" replace />
   const etapa = STATUS[d.status].etapa
@@ -46,6 +48,7 @@ export function Detalhes() {
             <li key={txt} className={i <= etapa ? 'ok' : ''}><span><Icone nome={ic} tam={22} /></span><div>{txt}<small>{d.datas[i] ? `em ${d.datas[i]}` : 'aguardando'}</small></div></li>
           ))}
         </ol>
+        <CancelarDoacao d={d} nota onRemovida={(x) => navigate('/rastreio', { state: { cancelada: x.id } })} />
       </section>
       <Link to="/rastreio" className="voltar">← Voltar ao Rastreio do Bem</Link>
     </>

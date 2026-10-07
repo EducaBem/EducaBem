@@ -1,3 +1,5 @@
+import { MODULOS } from './conteudo.js'
+
 // Dados falsos para as telas ficarem de pé antes do Supabase. Troque por chamadas à API depois.
 // Regras do Score seguem a doc v4 (seção 4.5): uma única moeda (pontos), calculada a partir dos lançamentos.
 
@@ -38,48 +40,11 @@ const DOACOES_DEMO = [
 
 // ---------- trilha 1 – conteúdo próprio (doc v4: nada de obra protegida no MVP) ----------
 export const TRILHA = { id: 't1', titulo: 'Trilha 1 – O Economista' }
-export const MODULOS = [
-  { id: 'm1', titulo: 'Para que serve o dinheiro?',
-    texto: ['O dinheiro é uma ferramenta: ele troca o nosso trabalho por coisas de que precisamos hoje e ajuda a guardar valor para amanhã.', 'Quem entende isso deixa de ver o dinheiro como "sorte" e passa a ver como algo que se planeja.'],
-    quiz: [
-      { p: 'Qual é a melhor definição de dinheiro?', alt: ['Uma ferramenta de troca e de guardar valor', 'Um prêmio para quem tem sorte', 'Algo que só adultos usam', 'Um número no extrato'], certa: 0, exp: 'O dinheiro facilita trocas e permite guardar valor para o futuro.' },
-      { p: 'Planejar o dinheiro ajuda principalmente a…', alt: ['Gastar tudo mais rápido', 'Decidir com calma o que é importante', 'Evitar ganhar mais', 'Não conversar sobre o assunto'], certa: 1, exp: 'Planejar é escolher com consciência onde o dinheiro vai.' },
-    ] },
-  { id: 'm2', titulo: 'Necessidade ou desejo?',
-    texto: ['Necessidades são o que mantém a vida funcionando: comida, moradia, saúde, estudo. Desejos são o que queremos, mas dá para esperar.', 'Antes de comprar, pergunte: "Eu preciso disso agora ou eu só quero?". Essa pausa de 10 segundos já economiza muito.'],
-    quiz: [
-      { p: 'Qual item é uma necessidade?', alt: ['Tênis de marca nova', 'Material escolar', 'Skin de jogo', 'Terceiro videogame'], certa: 1, exp: 'Estudar é uma necessidade; os outros itens são desejos.' },
-      { p: 'Qual hábito ajuda a evitar compras por impulso?', alt: ['Comprar na hora', 'Esperar antes de decidir', 'Ouvir só a propaganda', 'Parcelar tudo'], certa: 1, exp: 'Esperar um pouco dá tempo de separar querer de precisar.' },
-    ] },
-  { id: 'm3', titulo: 'Orçamento simples',
-    texto: ['Orçamento é o mapa do seu dinheiro: quanto entra, quanto sai e o que sobra. Uma regra fácil é 50-30-20: 50% para necessidades, 30% para desejos e 20% para guardar.', 'Não precisa ser perfeito. O importante é anotar e ajustar todo mês.'],
-    quiz: [
-      { p: 'Na regra 50-30-20, o que são os 20%?', alt: ['Lazer', 'Dívidas novas', 'Poupança e metas', 'Presentes'], certa: 2, exp: 'Os 20% são para guardar e construir o futuro.' },
-      { p: 'Para que serve um orçamento?', alt: ['Mostrar para onde vai o dinheiro', 'Aumentar o salário', 'Pagar menos imposto', 'Evitar contas'], certa: 0, exp: 'Ele deixa claro quanto entra e quanto sai.' },
-    ] },
-  { id: 'm4', titulo: 'Reserva de emergência',
-    texto: ['Reserva de emergência é um dinheiro guardado para imprevistos: um conserto, uma consulta, uma perda de renda.', 'Comece pequeno: guardar um valor fixo todo mês já cria o hábito. A meta clássica é cobrir de 3 a 6 meses de gastos essenciais.'],
-    quiz: [
-      { p: 'A reserva de emergência serve para…', alt: ['Viagens de férias', 'Imprevistos', 'Compras em promoção', 'Presentes'], certa: 1, exp: 'Ela protege você quando algo inesperado acontece.' },
-      { p: 'Qual é o melhor jeito de começar uma reserva?', alt: ['Esperar sobrar dinheiro', 'Guardar um valor fixo todo mês', 'Guardar só no fim do ano', 'Pedir emprestado'], certa: 1, exp: 'Constância importa mais que o tamanho do valor no início.' },
-    ] },
-  { id: 'm5', titulo: 'Juros: aliados e vilões',
-    texto: ['Juros são o "aluguel do dinheiro". Quando você investe, os juros trabalham a seu favor. Quando você deve, eles trabalham contra você.', 'Por isso, dívidas de cartão e cheque especial devem ser quitadas primeiro: seus juros costumam ser os mais altos.'],
-    quiz: [
-      { p: 'Quando os juros trabalham a seu favor?', alt: ['Quando você deve', 'Quando você investe', 'Quando atrasa a conta', 'Nunca'], certa: 1, exp: 'Ao investir, você recebe juros pelo dinheiro guardado.' },
-      { p: 'Qual dívida costuma ter juros mais altos?', alt: ['Cartão de crédito rotativo', 'Poupança', 'Mesada', 'Doação'], certa: 0, exp: 'O rotativo do cartão está entre os juros mais caros do mercado.' },
-    ] },
-  { id: 'm6', titulo: 'Metas e o poder do hábito',
-    texto: ['Uma meta boa é específica, tem valor e prazo: "guardar R$ 600 em 12 meses" é mais forte que "guardar dinheiro".', 'Dividir a meta em passos pequenos e comemorar cada um mantém a motivação. Quem doa um livro, por exemplo, já começa a criar o hábito de agir pelo bem.'],
-    quiz: [
-      { p: 'Qual meta é mais bem definida?', alt: ['Juntar dinheiro um dia', 'Guardar R$ 600 em 12 meses', 'Ficar rico', 'Gastar menos'], certa: 1, exp: 'Valor e prazo tornam a meta clara e mensurável.' },
-      { p: 'O que mantém a motivação ao longo do tempo?', alt: ['Passos pequenos e comemorar o progresso', 'Mudar de meta todo dia', 'Não contar para ninguém', 'Esperar o fim do prazo'], certa: 0, exp: 'Progresso visível gera vontade de continuar.' },
-    ] },
-]
+export { MODULOS }
 
 const MODULOS_DEMO = ['m1', 'm2', 'm3']
 export const doacoes = [] // preenchido por carregarConta()
-export const progresso = { concluidos: new Set() }
+export const progresso = { concluidos: new Set(), estrelas: {} }
 export const trilhaCompleta = () => progresso.concluidos.size === MODULOS.length
 export function estadoModulo(i) {
   if (progresso.concluidos.has(MODULOS[i].id)) return 'concluido'
@@ -103,13 +68,34 @@ export function stats() {
   return { livros: doacoes.length, pontos: pontosTotais(), leitores: entregues.length, instituicoes: new Set(entregues.map((d) => d.inst)).size }
 }
 
-export function addDoacao({ titulo, categoria, estado, ponto }) {
-  const n = String(doacoes.length + 1).padStart(4, '0')
-  doacoes.unshift({ id: `EB-${n}`, titulo, categoria, estado, ponto, inst: ponto.replace(/ \(.*\)/, ''), status: 'registrada', datas: [dm(new Date())] })
-  notificar('doacao', `Doação EB-${n} registrada! +${PTS.doacao} pts no Score do Bem.`, `/rastreio/EB-${n}`) // já salva
+// Contador de IDs por conta: nunca reaproveita número, mesmo depois de cancelar uma doação.
+// (Antes era doacoes.length + 1, o que duplicaria IDs assim que alguém removesse um livro.)
+let seqDoacao = 0
+function proximoId() {
+  const maior = doacoes.reduce((m, d) => Math.max(m, parseInt(String(d.id).slice(3), 10) || 0), 0)
+  seqDoacao = Math.max(seqDoacao, maior) + 1
+  return `EB-${String(seqDoacao).padStart(4, '0')}`
 }
-export function concluirModulo(id) {
-  if (progresso.concluidos.has(id)) return false
+export function addDoacao({ titulo, categoria, estado, ponto }) {
+  const id = proximoId()
+  doacoes.unshift({ id, titulo, categoria, estado, ponto, inst: ponto.replace(/ \(.*\)/, ''), status: 'registrada', datas: [dm(new Date())] })
+  notificar('doacao', `Doação ${id} registrada! +${PTS.doacao} pts no Score do Bem.`, `/rastreio/${id}`) // já salva
+  return id
+}
+// Só dá para desistir enquanto o livro ainda não saiu do ponto de coleta (status "registrada").
+// Os pontos voltam sozinhos: pontosTotais() é calculado a partir da lista de doações.
+export const podeCancelar = (d) => d?.status === 'registrada'
+export function removerDoacao(id) {
+  const i = doacoes.findIndex((d) => d.id === id)
+  if (i < 0 || !podeCancelar(doacoes[i])) return false
+  doacoes.splice(i, 1)
+  for (let k = notificacoes.length - 1; k >= 0; k--) if (notificacoes[k].to === `/rastreio/${id}`) notificacoes.splice(k, 1)
+  salvarConta() // TODO: DELETE /doacoes/:id (só se status = registrada)
+  return true
+}
+export function concluirModulo(id, estrelas = 1) {
+  progresso.estrelas[id] = Math.max(progresso.estrelas[id] || 0, estrelas)
+  if (progresso.concluidos.has(id)) { salvarConta(); return false }
   progresso.concluidos.add(id)
   if (trilhaCompleta()) notificar('trilha', `Trilha concluída! +${PTS.trilha} pts de bônus.`)
   salvarConta()
@@ -182,16 +168,17 @@ function aplicar(c) {
   usuario.nome = c.nome; usuario.email = c.email; usuario.nascimento = c.nascimento || ''; usuario.avatar = c.avatar || null
   doacoes.length = 0; doacoes.push(...(c.doacoes || []))
   notificacoes.length = 0; notificacoes.push(...(c.notificacoes || []))
-  progresso.concluidos = new Set(c.concluidos || [])
+  progresso.concluidos = new Set(c.concluidos || []); progresso.estrelas = { ...(c.estrelas || {}) }
+  seqDoacao = c.seq || 0
 }
-function vazia(nome, email) { return { nome, email: norm(email), nascimento: '', avatar: null, doacoes: [], notificacoes: [], concluidos: [] } }
-function demo() { return { ...vazia('Maria Alves', EMAIL_DEMO), doacoes: structuredClone(DOACOES_DEMO), notificacoes: structuredClone(NOTIF_DEMO), concluidos: [...MODULOS_DEMO] } }
+function vazia(nome, email) { return { nome, email: norm(email), nascimento: '', avatar: null, doacoes: [], notificacoes: [], concluidos: [], estrelas: {} } }
+function demo() { return { ...vazia('Maria Alves', EMAIL_DEMO), doacoes: structuredClone(DOACOES_DEMO), notificacoes: structuredClone(NOTIF_DEMO), concluidos: [...MODULOS_DEMO], estrelas: { m1: 3, m2: 2, m3: 3 } } }
 
 export function salvarConta() {
   if (!usuario.email) return
   const contas = ler(K_CONTAS, {})
   contas[usuario.email] = { nome: usuario.nome, email: usuario.email, nascimento: usuario.nascimento, avatar: usuario.avatar,
-    doacoes, notificacoes, concluidos: [...progresso.concluidos] }
+    doacoes, notificacoes, concluidos: [...progresso.concluidos], estrelas: progresso.estrelas, seq: seqDoacao }
   gravar(K_CONTAS, contas)
 }
 // Editar perfil: se o e-mail muda, a conta muda de chave e a sessão acompanha.

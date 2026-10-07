@@ -42,7 +42,7 @@ export default function AppLayout() {
   return (
     <div className="shell">
       {aberto && <div className="veu" onClick={fechar} />}
-      <aside className={`menu ${aberto ? 'aberto' : ''}`} aria-label="Menu principal">
+      <aside id="menu-principal" className={`menu ${aberto ? 'aberto' : ''}`} aria-label="Menu principal">
         <img className="logo" src={logo} alt="EducaBem" />
         <nav className="menu-nav">
           {ITENS.map(link)}
@@ -59,7 +59,7 @@ export default function AppLayout() {
         <header className="topo">
           <div className="barra-m">
             <img className="logo-m" src={logo} alt="EducaBem" />
-            <button className="burger" aria-label="Abrir menu" aria-expanded={aberto} onClick={() => setAberto(true)}><i /><i /><i /></button>
+            <button className="burger" aria-label={aberto ? 'Fechar menu' : 'Abrir menu'} aria-expanded={aberto} aria-controls="menu-principal" onClick={() => setAberto((x) => !x)}><i /><i /><i /></button>
           </div>
           <div className="lado">
             <button className="sino" aria-label={`Notificações${naoLidas ? `, ${naoLidas} novas` : ''}`} aria-expanded={painel} onClick={alternarPainel}>
