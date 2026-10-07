@@ -2,226 +2,170 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EducaBem: Educação Financeira para Todos</title>
-  <link rel="icon" type="image/png" href="assets/icon.png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Bree+Serif&family=Fredoka:wght@500;600;700&family=Inter:wght@400;500;600;700&family=Roboto+Slab:wght@700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <title>Educabem Chatbot</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0; padding: 0;
+      background-color: #f4f4f4;
+    }
+    #chatbot-button {
+      position: fixed; bottom: 20px; right: 20px;
+      background-color: #2e7d32; color: white;
+      border-radius: 50%; width: 60px; height: 60px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; font-size: 24px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+      border: 0; overflow: hidden; padding: 0;
+    }
+    #chatbot-button img {
+      width: 100%; height: 100%; object-fit: cover;
+    }
+    #chatbot-window {
+      position: fixed; bottom: 90px; right: 20px;
+      width: 320px; height: 420px;
+      background: #fff; border: 1px solid #ccc;
+      border-radius: 10px; display: none;
+      flex-direction: column; box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    }
+    #chatbot-header {
+      background:#2e7d32; color:white; padding:10px;
+      border-radius:10px 10px 0 0; font-weight: bold;
+      display: flex; align-items: center; gap: 8px;
+    }
+    #chatbot-header img {
+      width: 34px; height: 34px; border-radius: 50%; object-fit: cover;
+    }
+    #chatbot-messages {
+      flex:1; padding:10px; overflow-y:auto;
+      font-size:14px;
+    }
+    #chatbot-input-area {
+      padding:10px; border-top:1px solid #ccc;
+    }
+    #chatbot-input {
+      width:80%; padding:5px;
+    }
+    #chatbot-send {
+        width:15%; padding:5px; background:#2e7d32; color:white;
+        border:none; cursor:pointer;
+    }
+  </style>
 </head>
 <body>
+  <button id="chatbot-button" type="button" aria-label="Abrir chatbot">
+    <img src="img/chatbot.png" alt="Abrir chatbot" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';">
+    <span aria-hidden="true" style="display:none;">💬</span>
+  </button>
 
-<header>
-  <div class="nav">
-    <a href="#inicio" class="logo">
-      <img src="assets/logo-claro.png" alt="EducaBem Logo">
-    </a>
-    <nav class="links">
-      <a href="#inicio">Início</a>
-      <a href="#funciona">Doação</a>
-      <a href="#livros">Livros</a>
-      <a href="#diferenciais">Diferenciais</a>
-      <a href="app/#/criar-conta">Trilhas e Aprendizado</a>
-    </nav>
-    <a href="app/#/login" class="nav-login">
-      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10zm0 2c-4.4 0-9 2.2-9 5v3h18v-3c0-2.8-4.6-5-9-5z"/></svg>
-      Logar
-    </a>
-  </div>
-</header>
-
-<section class="hero" id="inicio">
-  <div class="wrap">
-    <div class="hero-copy">
-      <h1>QUEM LÊ, <span class="g">APRENDE BEM</span>. QUEM DOA, <span class="y">TRANSFORMA UM FUTURO.</span></h1>
-      <p class="lead">Separe os livros de educação financeira que você já tem em casa e ajude a transformar o futuro de quem precisa através do conhecimento sobre finanças.</p>
-      <div class="hero-actions">
-        <a href="app/#/ongs" class="btn btn-lime">ONGs parceiras</a>
-        <a href="app/#/criar-conta" class="btn btn-green">Começar minha trilha</a>
-      </div>
+  <section id="chatbot-window" aria-label="Chat Educabem">
+    <header id="chatbot-header">
+      <img src="img/chatbot.png" alt="" onerror="this.style.display='none';">
+      Educabem
+      <button id="chatbot-close" type="button" aria-label="Fechar chatbot">×</button>
+    </header>
+    <div id="chatbot-messages">
+      <p><strong>Educabem:</strong> Olá! Como posso ajudar?</p>
     </div>
-    <div class="hero-visual">
-      <div class="halo">
-        <img src="assets/mascot.png" alt="Mascote EducaBem">
-      </div>
-    </div>
-  </div>
-</section>
+    <form id="chatbot-input-area">
+      <input id="chatbot-input" type="text" placeholder="Digite sua mensagem..." autocomplete="off">
+      <button id="chatbot-send" type="submit">Enviar</button>
+    </form>
+  </section>
 
-<section class="funciona" id="funciona">
-  <div class="wrap">
-    <div class="section-head">
-      <h2>Como Funciona a Doação?</h2>
-    </div>
-    <div class="funciona-card">
-      <p>Separe os livros de educação financeira que você já tem em casa, escolha uma biblioteca ou ONG parceira e leve pessoalmente até ela. Sem frete e sem intermediário, com o status da doação acompanhado até a entrega.</p>
-      
-      <div class="steps">
-        <div class="step step-blue">
-          <div class="step-icon">
-            <img src="assets/openbook.png" alt="Separe os Livros">
-          </div>
-          <h3>1. Separe os Livros</h3>
-          <p>Reúna os exemplares de educação financeira parados na sua estante que podem mudar a vida de outra pessoa.</p>
-        </div>
-        
-        <div class="step step-yellow">
-          <div class="step-icon">
-            <img src="assets/van.png" alt="Entregue Pessoalmente">
-          </div>
-          <h3>2. Leve Até a Parceria</h3>
-          <p>Escolha uma biblioteca ou ONG parceira mais próxima e entregue pessoalmente. Sem custos de frete.</p>
-        </div>
-        
-        <div class="step step-green">
-          <div class="step-icon">
-            <img src="assets/handshake.png" alt="Acompanhe o Impacto">
-          </div>
-          <h3>3. Acompanhe o Impacto</h3>
-          <p>Receba um aviso a cada etapa e saiba quando seu livro for entregue na instituição parceira.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+  <script>
+    const button = document.getElementById('chatbot-button');
+    const windowElement = document.getElementById('chatbot-window');
+    const closeButton = document.getElementById('chatbot-close');
+    const form = document.getElementById('chatbot-input-area');
+    const input = document.getElementById('chatbot-input');
+    const messages = document.getElementById('chatbot-messages');
 
-<section class="diferenciais" id="diferenciais">
-  <div class="wrap">
-    <div class="section-head">
-      <h2>Diferenciais do <span class="hl">Bem</span></h2>
-      <p>Transparência e engajamento para a sua doação de livros.</p>
-    </div>
-    
-    <div class="dif-grid">
-      <div class="dif-card">
-        <span class="dif-tag">Acompanhamento</span>
-        <div class="dif-card-head">
-          <img src="assets/destination.png" alt="Rastreio do Bem">
-          <h3>Rastreio do Bem</h3>
-        </div>
-        <p>Saiba exatamente onde o seu livro entregue está e quando ele chegar às mãos de quem vai estudar por ele.</p>
-      </div>
+    button.addEventListener('click', () => {
+      windowElement.style.display = 'flex';
+      input.focus();
+    });
 
-      <div class="dif-card">
-        <span class="dif-tag">Incentivo</span>
-        <div class="dif-card-head">
-          <img src="assets/medal.png" alt="Score do Bem">
-          <h3>Score do Bem</h3>
-        </div>
-        <p>Acompanhe sua pontuação ao participar das doações e ao concluir trilhas práticas de aprendizado financeiro.</p>
-      </div>
-    </div>
-  </div>
-</section>
+    closeButton.addEventListener('click', () => {
+      windowElement.style.display = 'none';
+    });
 
-<section class="livros" id="livros">
-  <div class="wrap">
-    <div class="section-head">
-      <h2>Livros Recomendados</h2>
-    </div>
-    
-    <div class="book-carousel">
-      <div class="book-card">
-        <div class="book-cover-ph" style="background: #2563EB;">
-          <img src="assets/openbook.png" alt="Capa" style="width: 40px;">
-          <span class="ph-label">Finanças</span>
-        </div>
-        <h3>Pai Rico, Pai Pobre</h3>
-        <span class="book-meta">Robert Kiyosaki</span>
-      </div>
+    const respostas = [
+      {
+        termos: ['doar livro', 'doacao de livro', 'doar livros'],
+        texto: 'Que legal querer ajudar! Você pode doar livros didáticos, de literatura, gibis e paradidáticos em bom estado. Basta ir à seção "Doar Livros" no site, preencher o formulário com os dados dos livros e escolher se prefere levar a um ponto de coleta parceiro ou solicitar a retirada, quando disponível na sua região.'
+      },
+      {
+        termos: ['tipo de livro', 'tipos de livro', 'livros aceitos', 'aceitam livro'],
+        texto: 'Aceitamos livros de literatura infantil, juvenil e adulta, apostilas e livros didáticos atualizados, além de obras de negócios e finanças. Pedimos apenas que estejam em bom estado, sem páginas rasgadas, mofadas ou ilegíveis.'
+      },
+      {
+        termos: ['receber livro', 'pedir livro', 'livro emprestado', 'livros doados', 'catalogo'],
+        texto: 'Se você busca livros para leitura ou apoio nos estudos, acesse a aba "Catálogo de Livros" no site. Lá você pode buscar pelo título ou tema, fazer seu cadastro e solicitar o livro desejado gratuitamente.'
+      },
+      {
+        termos: ['curso de financa', 'conteudo de financa', 'educacao financeira', 'financas gratis'],
+        texto: 'Sim! O Educabem oferece artigos práticos, dicas rápidas no blog e cursos introdutórios gratuitos para ajudar você a organizar o orçamento, sair das dívidas e começar a investir.'
+      },
+      {
+        termos: ['organizar meu dinheiro', 'organizar o dinheiro', 'comecar a organizar', 'controle financeiro'],
+        texto: 'O primeiro passo é o autoconhecimento financeiro. Registre todas as entradas, como salário e rendas extras, e saídas, como gastos fixos e variáveis, por pelo menos 30 dias. Uma planilha de controle financeiro gratuita pode ajudar nessa jornada.'
+      },
+      {
+        termos: ['sair das dividas', 'sair da divida', 'negociar divida', 'endividamento'],
+        texto: 'Temos conteúdos sobre negociação de dívidas, planejamento de curto e longo prazo e prevenção do endividamento. Confira os guias práticos na seção "Educação Financeira" ou converse com nossa equipe de suporte para orientações gerais.'
+      },
+      {
+        termos: ['o que e o educabem', 'sobre o educabem', 'quem e o educabem'],
+        texto: 'O Educabem é uma organização sem fins lucrativos dedicada a democratizar o acesso à leitura por meio da doação de livros e a promover a inclusão e a saúde financeira de pessoas e famílias.'
+      },
+      {
+        termos: ['voluntario', 'voluntariado', 'parceiro', 'ponto de coleta', 'trabalhar no educabem'],
+        texto: 'Toda ajuda é muito bem-vinda! Você pode participar das ações de triagem de livros e oficinas, ou tornar sua empresa um ponto de coleta parceiro. Acesse "Trabalhe Conosco / Seja Voluntário" para preencher o formulário de inscrição.'
+      },
+      {
+        termos: ['olá', 'ola', 'oi', 'bom dia', 'boa tarde', 'boa noite'],
+        texto: 'Olá! Posso ajudar com doação de livros, catálogo, educação financeira, voluntariado ou informações sobre o Educabem.'
+      },
+      {
+        termos: ['obrigado', 'obrigada', 'valeu'],
+        texto: 'Por nada! Estou aqui para ajudar.'
+      }
+    ];
 
-      <div class="book-card">
-        <div class="book-cover-ph" style="background: #b45309;">
-          <img src="assets/openbook.png" alt="Capa" style="width: 40px;">
-          <span class="ph-label">Investimentos</span>
-        </div>
-        <h3>O Homem Mais Rico da Babilônia</h3>
-        <span class="book-meta">George S. Clason</span>
-      </div>
+    function normalizar(texto) {
+      return texto.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    }
 
-      <div class="book-card">
-        <div class="book-cover-ph" style="background: #0f7a38;">
-          <img src="assets/openbook.png" alt="Capa" style="width: 40px;">
-          <span class="ph-label">Planejamento</span>
-        </div>
-        <h3>Do Mil ao Milhão</h3>
-        <span class="book-meta">Thiago Nigro</span>
-      </div>
-    </div>
-    <p class="drag-hint">(arraste para ver mais)</p>
-  </div>
-</section>
+    function encontrarResposta(pergunta) {
+      const perguntaNormalizada = normalizar(pergunta);
+      const resposta = respostas.find((item) =>
+        item.termos.some((termo) => perguntaNormalizada.includes(normalizar(termo)))
+      );
 
-<footer>
-  <div class="foot-accent-bar"></div>
-  <div class="wrap foot-wrap">
-    <div class="foot-top">
-      <div class="foot-mascot-wrapper">
-        <img src="assets/mascot.png" alt="Mascote EducaBem" class="foot-mascot-img">
-      </div>
+      return resposta
+        ? resposta.texto
+        : 'Ainda não encontrei uma resposta para essa pergunta. Tente perguntar sobre doação de livros, catálogo, educação financeira, dívidas, voluntariado ou sobre o Educabem.';
+    }
 
-      <div class="foot-brand">
-        <a href="#inicio" class="foot-logo-card">
-          <img src="assets/logo-claro.png" alt="EducaBem Logo">
-        </a>
-        <p>Promovendo a educação financeira através do compartilhamento de livros e conhecimento com bibliotecas e ONGs parceiras.</p>
-        <div class="foot-social">
-          <a href="#" aria-label="Instagram">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
-          </a>
-          <a href="#" aria-label="Twitter">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg>
-          </a>
-          <a href="#" aria-label="LinkedIn">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
-          </a>
-        </div>
-      </div>
+    function adicionarMensagem(remetente, texto) {
+      const paragrafo = document.createElement('p');
+      const nome = document.createElement('strong');
+      nome.textContent = `${remetente}: `;
+      paragrafo.append(nome, texto);
+      messages.appendChild(paragrafo);
+    }
 
-      <div class="foot-cols">
-        <div class="foot-col">
-          <h4>Navegação</h4>
-          <a href="#inicio">Início</a>
-          <a href="#funciona">Doação</a>
-          <a href="#livros">Livros</a>
-          <a href="#diferenciais">Diferenciais</a>
-          <a href="app/#/criar-conta">Trilhas e Aprendizado</a>
-        </div>
-        <div class="foot-col">
-          <h4>Institucional</h4>
-          <a href="app/#/ongs">ONGs parceiras</a>
-          <a href="#">Trabalhe conosco</a>
-          <a href="#">Transparência</a>
-          <a href="#">Seja um voluntário</a>
-        </div>
-        <div class="foot-col">
-          <h4>Contato</h4>
-          <p class="contact-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
-            contato@educabem.org.br
-          </p>
-          <p class="contact-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
-            (11) 4000-0000
-          </p>
-          <p class="contact-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-            São Paulo, SP
-          </p>
-        </div>
-      </div>
-    </div>
-    
-    <div class="foot-bottom">
-      <p>&copy; 2026 EducaBem. Todos os direitos reservados.</p>
-      <div class="foot-bottom-links">
-        <a href="#">Termos de Uso</a>
-        <span>•</span>
-        <a href="#">Política de Privacidade</a>
-      </div>
-    </div>
-  </div>
-</footer>
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const text = input.value.trim();
+      if (!text) return;
 
+      adicionarMensagem('Você', text);
+      adicionarMensagem('Educabem', encontrarResposta(text));
+      input.value = '';
+      messages.scrollTop = messages.scrollHeight;
+    });
+  </script>
 </body>
 </html>
