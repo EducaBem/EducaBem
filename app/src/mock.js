@@ -1,4 +1,5 @@
 import { MODULOS } from './conteudo.js'
+import { supabase, temBanco } from './supabase.js'
 
 // Dados falsos para as telas ficarem de pé antes do Supabase. Troque por chamadas à API depois.
 // Regras do Score seguem a doc v4 (seção 4.5): uma única moeda (pontos), calculada a partir dos lançamentos.
@@ -59,7 +60,9 @@ export const usuario = {
   get inicial() { return (this.nome.trim()[0] || '?').toUpperCase() },
   get pontos() { return pontosTotais() },
 }
+let pontosDoBanco = null // com o banco ligado, o total vem de usuarios.pontos_totais (o app não calcula sozinho)
 export function pontosTotais() {
+  if (temBanco && pontosDoBanco !== null) return pontosDoBanco
   return doacoes.length * PTS.doacao + progresso.concluidos.size * PTS.modulo + (trilhaCompleta() ? PTS.trilha : 0)
 }
 // Números da Home e do Perfil (doc v4, 4.5)
@@ -170,6 +173,7 @@ function aplicar(c) {
   notificacoes.length = 0; notificacoes.push(...(c.notificacoes || []))
   progresso.concluidos = new Set(c.concluidos || []); progresso.estrelas = { ...(c.estrelas || {}) }
   seqDoacao = c.seq || 0
+  pontosDoBanco = null
 }
 function vazia(nome, email) { return { nome, email: norm(email), nascimento: '', avatar: null, doacoes: [], notificacoes: [], concluidos: [], estrelas: {} } }
 function demo() { return { ...vazia('Maria Alves', EMAIL_DEMO), doacoes: structuredClone(DOACOES_DEMO), notificacoes: structuredClone(NOTIF_DEMO), concluidos: [...MODULOS_DEMO], estrelas: { m1: 3, m2: 2, m3: 3 } } }
@@ -183,8 +187,14 @@ export function salvarConta() {
 }
 // Editar perfil: se o e-mail muda, a conta muda de chave e a sessão acompanha.
 export function atualizarPerfil({ nome, nascimento, email, avatar }) {
-  const antigo = usuario.email, novo = norm(email) || antigo
+  const antigo = usuario.email, novo = temBanco ? antigo : (norm(email) || antigo) // com banco, o e-mail é o do login e não muda aqui
   usuario.nome = nome.trim() || usuario.nome; usuario.nascimento = nascimento || ''; usuario.avatar = avatar; usuario.email = novo
+  if (temBanco) { // grava nome e nascimento no banco (a foto continua só neste aparelho até existir o Storage)
+    supabase.auth.getSession().then(({ data }) => {
+      const id = data.session?.user.id
+      return id && supabase.from('usuarios').update({ nome: usuario.nome, data_nascimento: usuario.nascimento || null }).eq('id', id)
+    }).then((r) => { if (r?.error) console.warn('Não salvou o perfil no banco:', r.error.message) }).catch((e) => console.warn(e))
+  }
   if (novo !== antigo) { const contas = ler(K_CONTAS, {}); delete contas[antigo]; gravar(K_CONTAS, contas); gravar(K_SESSAO, { email: novo }) }
   salvarConta()
 }
@@ -203,8 +213,161 @@ export function entrar(email) {
   aplicar(c); salvarConta(); gravar(K_SESSAO, { email: e })
 }
 export function entrarGoogle() { entrar('visitante@gmail.com') } // TODO: supabase.auth.signInWithOAuth({ provider: 'google' })
-export function sair() { aplicar(vazia('', '')); gravar(K_SESSAO, {}) }
+export function sair() { aplicar(vazia('', '')); gravar(K_SESSAO, {}); if (temBanco) supabase.auth.signOut().catch(() => {}) }
 export const logado = () => !!ler(K_SESSAO, {}).email
 
 // reabre a sessão ao recarregar a página
 { const e = ler(K_SESSAO, {}).email; const c = e && ler(K_CONTAS, {})[e]; if (c) aplicar(c) }
+
+// ---------- login real com Supabase Auth (só quando temBanco) ----------
+// Já vêm do banco: conta, login, perfil, doações, rastreio e notificações. Trilha, estrelas e ranking ainda ficam no localStorage de cada conta.
+function traduzirErro(e) {
+  if (e?.code === 'P0001' && e.message) return e.message // erros escritos nas funções do banco (ex.: "Faça login para doar")
+  const m = `${e?.code || ''} ${e?.message || ''}`.toLowerCase()
+  if (m.includes('invalid_credentials') || m.includes('invalid login')) return 'E-mail ou senha incorretos.'
+  if (m.includes('already') && (m.includes('registered') || m.includes('exists'))) return 'Este e-mail já tem conta. Tente entrar.'
+  if (m.includes('weak_password') || m.includes('at least')) return 'A senha precisa ter pelo menos 6 caracteres.'
+  if (m.includes('rate') || e?.status === 429) return 'Muitas tentativas. Espere um minuto e tente de novo.'
+  if (m.includes('email_not_confirmed')) return 'Confirme seu e-mail antes de entrar.'
+  if (m.includes('failed to fetch') || m.includes('network')) return 'Sem conexão com o servidor. Confira sua internet.'
+  console.error('Erro do Supabase:', e)
+  return 'Não foi possível concluir. Tente de novo.'
+}
+
+// Traz o perfil do banco e junta com os dados locais da conta (doações, trilha, pontos).
+async function carregarPerfilBanco(user) {
+  const { data } = await supabase.from('usuarios').select('nome, email, data_nascimento').eq('id', user.id).maybeSingle()
+  const email = norm(data?.email || user.email)
+  aplicar(ler(K_CONTAS, {})[email] || vazia('', email))
+  usuario.email = email
+  usuario.nome = data?.nome || nomeDoEmail(email)
+  usuario.nascimento = data?.data_nascimento || ''
+  salvarConta(); gravar(K_SESSAO, { email })
+  await atualizarDoBanco() // doações, notificações e pontos de coleta
+}
+
+export async function entrarBanco({ email, senha }) {
+  const { data, error } = await supabase.auth.signInWithPassword({ email: email.trim(), password: senha })
+  if (error) throw new Error(traduzirErro(error))
+  await carregarPerfilBanco(data.user)
+}
+
+export async function criarContaBanco({ nome, email, senha }) {
+  const { data, error } = await supabase.auth.signUp({ email: email.trim(), password: senha, options: { data: { nome: nome.trim(), aceitou_termos: 'true' } } })
+  if (error) throw new Error(traduzirErro(error))
+  if (!data.session) throw new Error('Conta criada, mas o projeto ainda exige confirmação por e-mail. Desligue "Confirm email" em Authentication → Sign In / Providers → Email.')
+  await carregarPerfilBanco(data.user)
+}
+
+// Chamada uma vez ao abrir o app: o login passa a valer só se existir sessão de verdade no Supabase.
+export async function iniciarSessao() {
+  if (!temBanco) return
+  try {
+    const { data } = await supabase.auth.getSession()
+    if (data.session) await carregarPerfilBanco(data.session.user)
+    else { aplicar(vazia('', '')); gravar(K_SESSAO, {}) }
+  } catch { /* sem rede: segue com o que já estava salvo */ }
+  supabase.auth.onAuthStateChange((evento) => {
+    if (evento === 'SIGNED_OUT' && logado()) { aplicar(vazia('', '')); gravar(K_SESSAO, {}); window.location.hash = '#/login' } // sessão expirou
+  })
+}
+
+// ---------- doações, rastreio e notificações no banco ----------
+const MODULOS_BANCO = new Map() // slug -> id numérico do módulo no banco
+const PONTOS_BANCO = [] // { id, nome } dos pontos de coleta; PONTOS_COLETA (nomes) é preenchido a partir daqui
+const um = (v) => (Array.isArray(v) ? v[0] : v)
+const destinoNotificacao = (r) => {
+  const codigo = r.texto.match(/EB-\d+/)?.[0]
+  if (r.tipo === 'status_doacao' && codigo) return `/rastreio/${codigo}`
+  return r.tipo === 'retencao' ? '/doar' : r.tipo === 'trilha' ? '/trilha' : '/score'
+}
+
+async function carregarDadosBanco() {
+  const [pc, d, n, mo, pr, us] = await Promise.all([
+    supabase.from('pontos_coleta').select('id, nome').order('id'),
+    supabase.from('doacoes').select('id, codigo, status, criado_em, livros(titulo, categoria, estado), pontos_coleta(nome, instituicoes(nome)), doacao_eventos(status, criado_em)').order('criado_em', { ascending: false }),
+    supabase.from('notificacoes').select('id, tipo, texto, lida, criado_em').order('criado_em', { ascending: false }).limit(30),
+    supabase.from('modulos').select('id, slug'),
+    supabase.from('progresso_modulos').select('modulo_id, estrelas'),
+    supabase.from('usuarios').select('pontos_totais').maybeSingle(), // a regra de segurança só devolve a linha da própria pessoa
+  ])
+  const falha = pc.error || d.error || n.error || mo.error || pr.error || us.error
+  if (falha) throw falha
+  if (pc.data.length) {
+    PONTOS_BANCO.length = 0; PONTOS_BANCO.push(...pc.data)
+    PONTOS_COLETA.length = 0; PONTOS_COLETA.push(...pc.data.map((p) => p.nome))
+  }
+  const lista = d.data.map((x) => {
+    const livro = um(x.livros) || {}, ponto = um(x.pontos_coleta) || {}, inst = um(ponto.instituicoes) || {}
+    const eventos = [...(x.doacao_eventos || [])].sort((a, b) => (a.criado_em < b.criado_em ? -1 : 1))
+    return { id: x.codigo, dbId: x.id, titulo: livro.titulo, categoria: livro.categoria, estado: livro.estado, ponto: ponto.nome || '',
+      inst: (inst.nome || '').replace(/ \(.*\)/, ''), status: x.status, datas: eventos.map((e) => dm(new Date(e.criado_em))) }
+  })
+  doacoes.length = 0; doacoes.push(...lista)
+  const doBanco = n.data.map((r) => ({ id: `db${r.id}`, db: true, tipo: r.tipo, texto: r.texto, lida: r.lida, to: destinoNotificacao(r) }))
+  notificacoes.length = 0; notificacoes.push(...doBanco)
+  // trilha: o banco guarda o id numérico; o app usa o slug (m1, m2...), que é igual ao id do módulo no conteudo.js
+  MODULOS_BANCO.clear(); mo.data.forEach((x) => MODULOS_BANCO.set(x.slug, x.id))
+  const slugDe = new Map(mo.data.map((x) => [x.id, x.slug]))
+  progresso.concluidos = new Set(pr.data.map((x) => slugDe.get(x.modulo_id)).filter(Boolean))
+  progresso.estrelas = Object.fromEntries(pr.data.filter((x) => slugDe.has(x.modulo_id)).map((x) => [slugDe.get(x.modulo_id), x.estrelas]))
+  pontosDoBanco = us.data?.pontos_totais ?? null
+}
+
+// Recarrega do banco, uma de cada vez (fila), e nunca lança erro: se a rede falhar, a tela segue com o que já tem.
+let fila = Promise.resolve()
+export function atualizarDoBanco() {
+  if (!temBanco) return Promise.resolve(false)
+  const rodar = async () => {
+    try { await carregarDadosBanco(); salvarConta(); return true } catch (e) { console.warn('Não carregou os dados do banco:', e?.message || e); return false }
+  }
+  fila = fila.then(rodar, rodar)
+  return fila
+}
+
+export async function addDoacaoBanco({ titulo, categoria, estado, ponto }) {
+  const pc = PONTOS_BANCO.find((p) => p.nome === ponto)
+  if (!pc) throw new Error('Ponto de coleta não encontrado. Recarregue a página e tente de novo.')
+  const { data: codigo, error } = await supabase.rpc('registrar_doacao', { p_titulo: titulo, p_categoria: categoria, p_estado: estado, p_ponto_id: pc.id })
+  if (error) throw new Error(traduzirErro(error))
+  await atualizarDoBanco()
+  return codigo
+}
+
+export async function removerDoacaoBanco(codigo) {
+  const d = doacoes.find((x) => x.id === codigo)
+  if (!d || !podeCancelar(d)) return false
+  const { error } = await supabase.rpc('cancelar_doacao', { p_doacao: d.dbId })
+  if (error) throw new Error(traduzirErro(error))
+  await atualizarDoBanco()
+  return true
+}
+
+// Ao fechar o painel de notificações: marca as do banco como lidas.
+export function marcarLidasBanco() {
+  if (!temBanco || !notificacoes.some((n) => n.db && !n.lida)) return
+  supabase.from('notificacoes').update({ lida: true }).eq('lida', false)
+    .then((r) => { if (r.error) console.warn('Não marcou como lidas:', r.error.message) })
+}
+
+// Fim do quiz: o banco guarda as estrelas (fica a melhor nota), dá 10 pts só na 1ª vez e +50 ao fechar a trilha.
+// Devolve true se foi a primeira vez neste módulo.
+export async function concluirModuloBanco(slug, estrelas) {
+  const id = MODULOS_BANCO.get(slug)
+  if (!id) throw new Error('Módulo não encontrado no banco. Recarregue a página e tente de novo.')
+  const { data, error } = await supabase.rpc('concluir_modulo', { p_modulo: id, p_estrelas: estrelas })
+  if (error) throw new Error(traduzirErro(error))
+  await atualizarDoBanco()
+  return Boolean(data?.[0]?.primeira_vez)
+}
+
+// Ranking de verdade: top 10 + a linha da pessoa logada. Os outros aparecem abreviados ("Ana S."), por privacidade.
+export async function rankingBanco() {
+  const { data, error } = await supabase.rpc('ranking', { p_limite: 10 })
+  if (error) throw new Error(traduzirErro(error))
+  const abreviar = (nome) => { const p = (nome || '').trim().split(/\s+/).filter(Boolean); return p.length > 1 ? `${p[0]} ${p[p.length - 1][0]}.` : p[0] || 'Leitor' }
+  const linhas = data.map((r) => ({ pos: Number(r.posicao), nome: r.eu ? r.nome : abreviar(r.nome), pontos: r.pontos, eu: r.eu }))
+  const eu = linhas.find((r) => r.eu)
+  const top = linhas.filter((r) => r.pos <= 10).slice(0, 10)
+  return { top, eu, foraDoTop: Boolean(eu) && !top.includes(eu) }
+}

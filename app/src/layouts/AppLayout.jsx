@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link, NavLink, Navigate, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import logo from '../../../assets/logo-claro.png' // texto branco: lê direto sobre o marinho, sem placa branca
-import { usuario, notificacoes, logado, sair, salvarConta } from '../mock.js'
+import { usuario, notificacoes, logado, sair, salvarConta, atualizarDoBanco, marcarLidasBanco } from '../mock.js'
 import { Avatar, Icone } from '../components/ui.jsx'
 
 const ITENS = [['/home', 'home', 'Home'], ['/doar', 'package', 'Doar Livros'], ['/rastreio', 'pin', 'Rastreio do Bem'],
@@ -21,9 +21,15 @@ export default function AppLayout() {
   const sairDaConta = () => { sair(); navigate('/login') }
 
   const alternarPainel = () => {
-    if (painel) { notificacoes.forEach((n) => { n.lida = true }); salvarConta() } // ao fechar, marca como lidas (TODO: PATCH /notificacoes)
+    if (painel) { marcarLidasBanco(); notificacoes.forEach((n) => { n.lida = true }); salvarConta() } // ao fechar, marca como lidas (TODO: PATCH /notificacoes)
     setPainel(!painel); forcar((x) => x + 1)
   }
+  // Com o banco ligado, cada troca de tela busca o que mudou (ex.: status da doação alterado pela equipe).
+  const primeiraTela = useRef(true)
+  useEffect(() => {
+    if (primeiraTela.current) { primeiraTela.current = false; return }
+    atualizarDoBanco().then((ok) => ok && forcar((x) => x + 1))
+  }, [pathname])
   // Esc fecha o menu e o painel de notificações
   useEffect(() => {
     const onKey = (e) => { if (e.key === 'Escape') { setAberto(false); setPainel(false) } }

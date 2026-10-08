@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { temBanco } from '../supabase.js'
 import { MODULOS, TRILHA, moduloAtual, nivelDe, atualizarPerfil, progresso, stats, usuario } from '../mock.js'
 import { Avatar, BarraProgresso, Icone } from '../components/ui.jsx'
 import parceria from '../../../assets/handshake.png'
@@ -65,7 +66,7 @@ export function EditarPerfil() {
         </label>
         <label className="campo-g">Nome<input name="nome" defaultValue={usuario.nome} required /></label>
         <label className="campo-g">Data de nascimento<input name="nascimento" type="date" defaultValue={usuario.nascimento} /></label>
-        <label className="campo-g">Email<input name="email" type="email" defaultValue={usuario.email} required /></label>
+        <label className="campo-g">Email<input name="email" type="email" defaultValue={usuario.email} required readOnly={temBanco} /></label>
         <div className="botoes-form">
           <button type="button" className="btn-cinza" onClick={() => navigate('/perfil')}>Cancelar</button>
           <button type="submit" className="btn-salvar">Salvar alterações</button>

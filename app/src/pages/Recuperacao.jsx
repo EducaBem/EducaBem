@@ -1,7 +1,9 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Botao, Campo } from '../components/ui.jsx'
+import { Link } from 'react-router-dom'
 import { emailPendente, entrar } from '../mock.js'
+import { temBanco } from '../supabase.js'
 
 // Tela do protótipo: e-mail + código na mesma tela.
 export function ConfirmarCodigo() {
@@ -24,6 +26,13 @@ export function ConfirmarCodigo() {
 export function EsqueciSenha() {
   const [etapa, setEtapa] = useState(1)
   const navigate = useNavigate()
+  // com o banco ligado, esta tela de demonstração não envia nada de verdade: melhor avisar do que fingir
+  if (temBanco) return (
+    <div className="auth-card">
+      <header className="auth-cab"><h2>Recuperar senha</h2><p>A recuperação de senha por e-mail ainda está em construção. Por enquanto, fale com a equipe do EducaBem para redefinir.</p></header>
+      <Link className="link-sub" to="/login">Voltar para o login</Link>
+    </div>
+  )
   function avancar(e) {
     e.preventDefault()
     if (etapa < 3) setEtapa(etapa + 1)

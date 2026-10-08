@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
-import { PTS, podeCancelar, removerDoacao } from '../mock.js'
+import { PTS, podeCancelar, removerDoacao, removerDoacaoBanco } from '../mock.js'
+import { temBanco } from '../supabase.js'
 import { Icone, useDialogoAberto } from './ui.jsx'
 
 // Botão "Cancelar doação" + diálogo de confirmação.
@@ -7,6 +8,8 @@ import { Icone, useDialogoAberto } from './ui.jsx'
 // Com `nota`, as doações que já não dá para cancelar mostram o motivo em vez do botão.
 export default function CancelarDoacao({ d, onRemovida, nota = false, curto = false, className = '' }) {
   const [aberto, setAberto] = useState(false)
+  const [erro, setErro] = useState('')
+  const [enviando, setEnviando] = useState(false)
   const gatilho = useRef(null)
 
   if (!podeCancelar(d)) {
@@ -14,21 +17,26 @@ export default function CancelarDoacao({ d, onRemovida, nota = false, curto = fa
       ? <p className="aviso-cancel"><Icone nome="info" tam={18} />Este livro já saiu do ponto de coleta, então a doação não pode mais ser cancelada.</p>
       : null
   }
-  function confirmar() {
-    if (removerDoacao(d.id)) { setAberto(false); onRemovida?.(d) }
+  async function confirmar() {
+    setErro('')
+    try {
+      setEnviando(true)
+      const ok = temBanco ? await removerDoacaoBanco(d.id) : removerDoacao(d.id)
+      if (ok) { setAberto(false); onRemovida?.(d) } else setEnviando(false)
+    } catch (e) { setErro(e.message); setEnviando(false) }
   }
-  function fechar() { setAberto(false); gatilho.current?.focus() }
+  function fechar() { setAberto(false); setErro(''); gatilho.current?.focus() }
   return (
     <>
       <button ref={gatilho} type="button" className={`btn-cancelar ${className}`} aria-label={`Cancelar doação ${d.id}`} onClick={() => setAberto(true)}>
         <Icone nome="trash" tam={18} />{curto ? 'Cancelar' : 'Cancelar doação'}
       </button>
-      {aberto && <Confirmacao d={d} onManter={fechar} onConfirmar={confirmar} />}
+      {aberto && <Confirmacao d={d} erro={erro} enviando={enviando} onManter={fechar} onConfirmar={confirmar} />}
     </>
   )
 }
 
-function Confirmacao({ d, onManter, onConfirmar }) {
+function Confirmacao({ d, erro, enviando, onManter, onConfirmar }) {
   useDialogoAberto()
   const manter = useRef(null)
   const caixa = useRef(null)
@@ -52,9 +60,10 @@ function Confirmacao({ d, onManter, onConfirmar }) {
         <span className="dlg-ic"><Icone nome="trash" tam={28} /></span>
         <h2 id="dlg-t">Cancelar esta doação?</h2>
         <p id="dlg-d">O livro <b>{d.titulo}</b> ({d.id}) sai das suas doações e você deixa de contar os <b>{PTS.doacao} pts</b> dela no Score do Bem.</p>
+        {erro && <p className="msg-erro" role="alert">{erro}</p>}
         <div className="dlg-acoes">
           <button ref={manter} type="button" className="dlg-manter" onClick={onManter}>Manter doação</button>
-          <button type="button" className="dlg-sim" onClick={onConfirmar}>Sim, cancelar</button>
+          <button type="button" className="dlg-sim" onClick={onConfirmar} disabled={enviando}>{enviando ? 'Cancelando…' : 'Sim, cancelar'}</button>
         </div>
       </div>
     </div>

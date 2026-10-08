@@ -1,11 +1,12 @@
 import { useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { addDoacao, CATEGORIAS, doacoes, ESTADOS, PONTOS_COLETA, PTS } from '../mock.js'
+import { addDoacao, addDoacaoBanco, CATEGORIAS, doacoes, ESTADOS, PONTOS_COLETA, PTS } from '../mock.js'
 import livroAberto from '../../../assets/livro-aberto.png'
 import pilhaVerde from '../../../assets/pilha-verde.png'
 import pilhaAzul from '../../../assets/pilha-azul.png'
 import beijaFlor from '../../../assets/beija-flor-doacao.png'
 import { Icone } from '../components/ui.jsx'
+import { temBanco } from '../supabase.js'
 
 const PASSOS = [
   ['Cadastre seu livro', 'Informe o título e o estado de conservação'],
@@ -70,12 +71,19 @@ export function NovoLivro() {
   const navigate = useNavigate()
   const tituloRef = useRef(null)
   const [erro, setErro] = useState('')
-  function enviar(e) {
+  const [erroEnvio, setErroEnvio] = useState('')
+  const [enviando, setEnviando] = useState(false)
+  async function enviar(e) {
     e.preventDefault()
     const f = new FormData(e.target)
     const titulo = String(f.get('titulo')).trim().replace(/\s+/g, ' ') // "   " passava no required e criava doação sem título
     if (!titulo) { setErro('Digite o título do livro.'); tituloRef.current?.focus(); return }
-    addDoacao({ titulo, categoria: f.get('categoria'), estado: f.get('estado'), ponto: f.get('ponto') }) // TODO: POST /doacoes
+    const dados = { titulo, categoria: f.get('categoria'), estado: f.get('estado'), ponto: f.get('ponto') }
+    setErroEnvio('')
+    if (temBanco) {
+      setEnviando(true)
+      try { await addDoacaoBanco(dados) } catch (err) { setErroEnvio(err.message); setEnviando(false); return }
+    } else addDoacao(dados)
     navigate('/doar/concluido')
   }
   return (
@@ -111,7 +119,8 @@ export function NovoLivro() {
 
         <div className="resumo-pts"><Icone nome="star" tam={22} fill="currentColor" /><span><b>+{PTS.doacao} pts</b> no Score do Bem ao confirmar</span></div>
         <div className="acoes-livro">
-          <button className="btn btn-amarelo" type="submit">Confirmar doação</button>
+          {erroEnvio && <p className="msg-erro" role="alert">{erroEnvio}</p>}
+          <button className="btn btn-amarelo" type="submit" disabled={enviando}>{enviando ? 'Registrando…' : 'Confirmar doação'}</button>
           <p className="nota-cancel">Mudou de ideia? Dá para cancelar no Rastreio do Bem enquanto o livro não sair do ponto de coleta.</p>
           <Link to="/doar" className="voltar escuro">← Voltar</Link>
         </div>

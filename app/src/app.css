@@ -368,7 +368,6 @@ svg { flex: none; }
 
 /* perfil */
 .card-perfil { background: linear-gradient(160deg, var(--marinho-700), var(--marinho)); border-radius: var(--r-xl); padding: 32px 28px 30px; color: #fff; display: grid; gap: 12px; justify-items: center; max-width: 560px; width: 100%; margin: 0 auto; box-shadow: var(--sh-2); position: relative; overflow: hidden; }
-.card-perfil::before { content: ''; position: absolute; top: -70px; right: -70px; width: 180px; height: 180px; border-radius: 50%; background: rgba(37,99,235,.35); }
 .card-perfil .avatar { box-shadow: 0 0 0 5px var(--amarelo), 0 12px 28px rgba(0,0,0,.35); }
 .card-perfil .h-inter { font-size: 26px; }
 .card-perfil .barra { width: 100%; max-width: 300px; }
@@ -786,3 +785,7 @@ body.com-dialogo { overflow: hidden; }
 .player.cheia { background: #000; align-content: center; padding: 0; gap: 0; }
 .player.cheia .video { aspect-ratio: auto; border-radius: 0; box-shadow: none; height: calc(100vh - 118px); height: calc(100dvh - 118px); }
 .player.cheia .player-barra { border-radius: 0; }
+
+/* erro de login/cadastro */
+.auth-card .dica.erro { color: #991B1B; background: #FEE2E2; border-radius: 10px; padding: 10px 12px; font-weight: 600; margin: 4px 0 12px; }
+.btn:disabled { opacity: .6; cursor: not-allowed; }

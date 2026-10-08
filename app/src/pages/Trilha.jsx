@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link, Navigate, useLocation, useNavigate, useParams } from 'react-router-dom'
-import { MODULOS, PTS, TRILHA, concluirModulo, estadoModulo, missoes, nivelDe, progresso, usuario } from '../mock.js'
+import { temBanco } from '../supabase.js'
+import { MODULOS, PTS, TRILHA, concluirModulo, concluirModuloBanco, estadoModulo, missoes, nivelDe, progresso, usuario } from '../mock.js'
 import { Atividade } from '../components/atividades.jsx'
 import { PlayerYT } from '../components/PlayerYT.jsx'
 import mascote from '../../../assets/mascot.png'
@@ -242,6 +243,8 @@ function QuizTela() {
   const [errou, setErrou] = useState(() => new Set())
   const [resolvidas, setResolvidas] = useState(0)
   const [res, setRes] = useState(null)
+  const [salvando, setSalvando] = useState(false)
+  const [erroSalvar, setErroSalvar] = useState('')
   if (!m || estadoModulo(idx) === 'bloqueado') return <Navigate to="/trilha" replace />
   const total = m.quiz.length
   const pergunta = fila[q]
@@ -254,10 +257,13 @@ function QuizTela() {
     if (!retry) setErrou(new Set([...errou, pergunta.id]))
     setFila([...fila, { ...embaralhar(m.quiz[pergunta.id]), id: pergunta.id }])
   }
-  function avancar() {
+  async function avancar() {
     if (q < fila.length - 1) { setQ(q + 1); setEscolha(null); return }
     const estrelas = errou.size === 0 ? 3 : errou.size === 1 ? 2 : 1
-    setRes({ ganhou: concluirModulo(m.id, estrelas), estrelas }) // TODO: POST /progresso-modulos
+    if (!temBanco) { setRes({ ganhou: concluirModulo(m.id, estrelas), estrelas }); return }
+    setSalvando(true); setErroSalvar('')
+    try { setRes({ ganhou: await concluirModuloBanco(m.id, estrelas), estrelas }) } // salva no banco; se falhar, o quiz continua na tela e dá para tentar de novo
+    catch (e) { setErroSalvar(e.message); setSalvando(false) }
   }
 
   if (res) {
@@ -290,7 +296,8 @@ function QuizTela() {
       <h2>{pergunta.p}</h2>
       <Alternativas pergunta={pergunta} escolha={escolha} onEscolher={responder} />
       <Feedback pergunta={pergunta} escolha={escolha} />
-      {escolha !== null && <button className="btn btn-amarelo cta" onClick={avancar}>{q >= fila.length - 1 ? 'Ver resultado' : 'Próxima'} <Icone nome="arrow" tam={20} /></button>}
+      {erroSalvar && <p className="msg-erro" role="alert">{erroSalvar}</p>}
+      {escolha !== null && <button className="btn btn-amarelo cta" onClick={avancar} disabled={salvando}>{salvando ? 'Salvando…' : q >= fila.length - 1 ? 'Ver resultado' : 'Próxima'} <Icone nome="arrow" tam={20} /></button>}
     </div>
   )
 }

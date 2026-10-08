@@ -1,5 +1,7 @@
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { MEDALHAS, NIVEIS, nivelDe, ranking, usuario } from '../mock.js'
+import { MEDALHAS, NIVEIS, nivelDe, ranking, rankingBanco, usuario } from '../mock.js'
+import { temBanco } from '../supabase.js'
 import { Avatar, Icone, Medalha, NivelBarra } from '../components/ui.jsx'
 
 function Abas({ ativa }) {
@@ -60,9 +62,17 @@ export function Score() {
 }
 
 export function Ranking() {
-  const { top, eu, foraDoTop } = ranking()
-  const linha = (r) => (
-    <li key={r.pos} className={r.eu ? 'eu' : ''}>
+  const [dados, setDados] = useState(() => (temBanco ? null : ranking()))
+  const [erro, setErro] = useState('')
+  useEffect(() => {
+    if (!temBanco) return undefined
+    let vivo = true
+    rankingBanco().then((d) => vivo && setDados(d)).catch((e) => vivo && setErro(e.message))
+    return () => { vivo = false }
+  }, [])
+  const { top = [], eu, foraDoTop = false } = dados || {}
+  const linha = (r, i) => (
+    <li key={`${r.pos}-${i}`} className={r.eu ? 'eu' : ''}>
       <span className={`pos pos-${r.pos}`}>{r.pos}</span>
       <span className="avatar">{r.nome[0]}</span>
       <span className="nome">{r.nome}{r.eu && ' (você)'}</span>
@@ -75,6 +85,8 @@ export function Ranking() {
       <Abas ativa="ranking" />
       <h1 className="tc">Ranking do Bem</h1>
       <p className="sub">Os 10 doadores com mais pontos</p>
+      {erro && <p className="msg-erro tc" role="alert">{erro}</p>}
+      {!dados && !erro && <p className="sub" role="status">Carregando o ranking…</p>}
       <ol className="rank">
         {top.map(linha)}
         {foraDoTop && <><li className="reticencias" aria-hidden>⋯</li>{linha(eu)}</>}
