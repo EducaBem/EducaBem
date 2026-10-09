@@ -3,6 +3,7 @@ import { Link, NavLink, Navigate, Outlet, useLocation, useNavigate } from 'react
 import logo from '../../../assets/logo-claro.png' // texto branco: lê direto sobre o marinho, sem placa branca
 import { usuario, notificacoes, logado, sair, salvarConta, atualizarDoBanco, marcarLidasBanco } from '../mock.js'
 import { Avatar, Icone } from '../components/ui.jsx'
+import Chatbot from '../components/Chatbot.jsx'
 
 const ITENS = [['/home', 'home', 'Home'], ['/doar', 'package', 'Doar Livros'], ['/rastreio', 'pin', 'Rastreio do Bem'],
   ['/trilha', 'cap', 'Trilha'], ['/score', 'trophy', 'Score do Bem'], ['/perfil', 'user', 'Perfil']]
@@ -65,7 +66,7 @@ export default function AppLayout() {
         <header className="topo">
           <div className="barra-m">
             <img className="logo-m" src={logo} alt="EducaBem" />
-            <button className="burger" aria-label={aberto ? 'Fechar menu' : 'Abrir menu'} aria-expanded={aberto} aria-controls="menu-principal" onClick={() => setAberto((x) => !x)}><i /><i /><i /></button>
+            <button className="burger" aria-label={aberto ? 'Fechar menu' : 'Abrir menu'} aria-expanded={aberto} aria-controls="menu-principal" onClick={() => setAberto((x) => !x)}><i /><i /><i />[...]
           </div>
           <div className="lado">
             <button className="sino" aria-label={`Notificações${naoLidas ? `, ${naoLidas} novas` : ''}`} aria-expanded={painel} onClick={alternarPainel}>
@@ -84,6 +85,7 @@ export default function AppLayout() {
           )}
         </header>
         <main className="conteudo"><Outlet /></main>
+        <Chatbot />
       </div>
     </div>
   )
