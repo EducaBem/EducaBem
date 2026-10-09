@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Bree+Serif&family=Fredoka:wght@500;600;700&family=Inter:wght@400;500;600;700&family=Roboto+Slab:wght@700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="chatbot.css">
 </head>
 <body>
 
@@ -54,7 +55,7 @@
       <h2>Como Funciona a Doação?</h2>
     </div>
     <div class="funciona-card">
-      <p>Separe os livros de educação financeira que você já tem em casa, escolha uma biblioteca ou ONG parceira e leve pessoalmente até ela. Sem frete e sem intermediário, com o status da doação acompanhado até a entrega.</p>
+      <p>Separe os livros de educação financeira que você já tem em casa, escolha uma biblioteca ou ONG parceira e leve pessoalmente até ela. Sem frete e sem intermediário, com o status da doação em tempo real.</p>
       
       <div class="steps">
         <div class="step step-blue">
@@ -167,10 +168,10 @@
         <p>Promovendo a educação financeira através do compartilhamento de livros e conhecimento com bibliotecas e ONGs parceiras.</p>
         <div class="foot-social">
           <a href="#" aria-label="Instagram">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><circle cx="17.5" cy="6.5" r="1.5"></circle></svg>
           </a>
           <a href="#" aria-label="Twitter">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2s9 5 20 5a9.5 9.5 0 0 0-9-5.5c4.75 2.25 7-7 7-7"></path></svg>
           </a>
           <a href="#" aria-label="LinkedIn">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
@@ -222,6 +223,122 @@
     </div>
   </div>
 </footer>
+
+<!-- CHATBOT -->
+<button id="chatbot-button" type="button" aria-label="Abrir chatbot">
+  💬
+</button>
+
+<section id="chatbot-window" aria-label="Chat Educabem">
+  <header id="chatbot-header">
+    <span>Educabem</span>
+    <button id="chatbot-close" type="button" aria-label="Fechar chatbot">×</button>
+  </header>
+  
+  <div id="chatbot-messages">
+    <p><strong>Educabem:</strong> Olá! Como posso ajudar?</p>
+  </div>
+
+  <form id="chatbot-input-area">
+    <input id="chatbot-input" type="text" placeholder="Digite sua mensagem..." autocomplete="off">
+    <button id="chatbot-send" type="submit">Enviar</button>
+  </form>
+</section>
+
+<script>
+  const button = document.getElementById('chatbot-button');
+  const windowElement = document.getElementById('chatbot-window');
+  const closeButton = document.getElementById('chatbot-close');
+  const form = document.getElementById('chatbot-input-area');
+  const input = document.getElementById('chatbot-input');
+  const messages = document.getElementById('chatbot-messages');
+
+  button.addEventListener('click', () => {
+    windowElement.style.display = 'flex';
+    input.focus();
+  });
+
+  closeButton.addEventListener('click', () => {
+    windowElement.style.display = 'none';
+  });
+
+  const respostas = [
+    {
+      termos: ['doar livro', 'doacao de livro', 'doar livros'],
+      texto: 'Que legal querer ajudar! Você pode doar livros didáticos, de literatura, gibis e paradidáticos em bom estado. Basta separar os livros, escolher uma biblioteca ou ONG parceira e entregar pessoalmente. Sem frete e sem intermediário!'
+    },
+    {
+      termos: ['tipo de livro', 'tipos de livro', 'livros aceitos', 'aceitam livro'],
+      texto: 'Aceitamos livros de literatura infantil, juvenil e adulta, apostilas e livros didáticos atualizados, além de obras de negócios e finanças. Pedimos apenas que estejam em bom estado, sem páginas rasgadas, mofadas ou ilegíveis.'
+    },
+    {
+      termos: ['receber livro', 'pedir livro', 'livro emprestado', 'livros doados', 'catalogo'],
+      texto: 'Se você busca livros para leitura ou apoio nos estudos, acesse a aba "Livros" no site. Lá você pode buscar pelo título ou tema e solicitar o livro desejado.'
+    },
+    {
+      termos: ['curso de financa', 'conteudo de financa', 'educacao financeira', 'financas gratis'],
+      texto: 'Sim! O Educabem oferece trilhas de aprendizado gratuitas sobre educação financeira, com conteúdos práticos para ajudar você a organizar o orçamento, sair das dívidas e começar a investir.'
+    },
+    {
+      termos: ['organizar meu dinheiro', 'organizar o dinheiro', 'comecar a organizar', 'controle financeiro'],
+      texto: 'O primeiro passo é o autoconhecimento financeiro. Registre todas as entradas e saídas, por pelo menos 30 dias. Depois, procure criar um orçamento e acompanhe regularmente. Nossas trilhas podem ajudar!'
+    },
+    {
+      termos: ['sair das dividas', 'sair da divida', 'negociar divida', 'endividamento'],
+      texto: 'Temos conteúdos sobre negociação de dívidas, planejamento e prevenção do endividamento. Comece por uma de nossas trilhas de aprendizado para orientações práticas e detalhadas.'
+    },
+    {
+      termos: ['o que e o educabem', 'sobre o educabem', 'quem e o educabem'],
+      texto: 'O Educabem é uma iniciativa dedicada a democratizar o acesso à leitura através da doação de livros e a promover a inclusão e a educação financeira de pessoas e famílias.'
+    },
+    {
+      termos: ['voluntario', 'voluntariado', 'parceiro', 'ponto de coleta', 'trabalhar no educabem'],
+      texto: 'Toda ajuda é bem-vinda! Você pode participar das ações de triagem de livros e oficinas, ou tornar sua empresa um ponto de coleta parceiro. Acesse "Trabalhe conosco" para saber mais.'
+    },
+    {
+      termos: ['olá', 'ola', 'oi', 'bom dia', 'boa tarde', 'boa noite'],
+      texto: 'Olá! Bem-vindo ao Educabem! Posso ajudar com perguntas sobre doações, educação financeira, nossos livros, voluntariado e muito mais.'
+    },
+    {
+      termos: ['obrigado', 'obrigada', 'valeu', 'muito obrigado'],
+      texto: 'Por nada! Estou sempre aqui para ajudar. Qualquer dúvida, é só chamar! 😊'
+    }
+  ];
+
+  function normalizar(texto) {
+    return texto.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  }
+
+  function encontrarResposta(pergunta) {
+    const perguntaNormalizada = normalizar(pergunta);
+    const resposta = respostas.find((item) =>
+      item.termos.some((termo) => perguntaNormalizada.includes(normalizar(termo)))
+    );
+
+    return resposta
+      ? resposta.texto
+      : 'Ainda não encontrei uma resposta para essa pergunta. Tente perguntar sobre doação de livros, educação financeira, voluntariado ou sobre o Educabem.';
+  }
+
+  function adicionarMensagem(remetente, texto) {
+    const paragrafo = document.createElement('p');
+    const nome = document.createElement('strong');
+    nome.textContent = `${remetente}: `;
+    paragrafo.append(nome, texto);
+    messages.appendChild(paragrafo);
+  }
+
+  form.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const text = input.value.trim();
+    if (!text) return;
+
+    adicionarMensagem('Você', text);
+    adicionarMensagem('Educabem', encontrarResposta(text));
+    input.value = '';
+    messages.scrollTop = messages.scrollHeight;
+  });
+</script>
 
 </body>
 </html>
