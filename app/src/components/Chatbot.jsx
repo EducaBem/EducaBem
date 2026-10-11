@@ -1,40 +1,23 @@
 import { useState, useRef, useEffect } from 'react'
-import { Icone } from './ui.jsx'
-import chatbotIcon from '../../../assets/chatbot.png'
 import './Chatbot.css'
+import chatbotIcon from '../../../assets/chatbot.png'
 
 const RESPOSTAS = [
   {
     termos: ['doar livro', 'doacao de livro', 'doar livros'],
-    texto: 'Que legal querer ajudar! Você pode doar livros didáticos, de literatura, gibis e paradidáticos em bom estado. Basta ir à seção "Doar Livros" no site, preencher o formulário com o[...]
+    texto: 'Que legal querer ajudar! Você pode doar livros didáticos, de literatura, gibis e paradidáticos em bom estado. Basta ir à seção "Doar Livros" no site, preencher o formulário com os dados e confirmar a entrega.'
   },
   {
     termos: ['tipo de livro', 'tipos de livro', 'livros aceitos', 'aceitam livro'],
-    texto: 'Aceitamos livros de literatura infantil, juvenil e adulta, apostilas e livros didáticos atualizados, além de obras de negócios e finanças. Pedimos apenas que estejam em bom estado,[...]
+    texto: 'Aceitamos livros de literatura infantil, juvenil e adulta, apostilas e livros didáticos atualizados, além de obras de negócios e finanças. Pedimos apenas que estejam em bom estado.'
   },
   {
     termos: ['receber livro', 'pedir livro', 'livro emprestado', 'livros doados', 'catalogo'],
-    texto: 'Se você busca livros para leitura ou apoio nos estudos, acesse a aba "Catálogo de Livros" no site. Lá você pode buscar pelo título ou tema, fazer seu cadastro e solicitar o livro [...]
+    texto: 'Se você busca livros para leitura ou apoio nos estudos, acesse a aba "Catálogo de Livros" no site. Lá você pode buscar pelo título ou tema, fazer seu cadastro e solicitar o livro.'
   },
   {
     termos: ['curso de financa', 'conteudo de financa', 'educacao financeira', 'financas gratis'],
-    texto: 'Sim! O Educabem oferece artigos práticos, dicas rápidas no blog e cursos introdutórios gratuitos para ajudar você a organizar o orçamento, sair das dívidas e começar a investir.[...]
-  },
-  {
-    termos: ['organizar meu dinheiro', 'organizar o dinheiro', 'comecar a organizar', 'controle financeiro'],
-    texto: 'O primeiro passo é o autoconhecimento financeiro. Registre todas as entradas, como salário e rendas extras, e saídas, como gastos fixos e variáveis, por pelo menos 30 dias. Uma pla[...]
-  },
-  {
-    termos: ['sair das dividas', 'sair da divida', 'negociar divida', 'endividamento'],
-    texto: 'Temos conteúdos sobre negociação de dívidas, planejamento de curto e longo prazo e prevenção do endividamento. Confira os guias práticos na seção "Educação Financeira" ou co[...]
-  },
-  {
-    termos: ['o que e o educabem', 'sobre o educabem', 'quem e o educabem'],
-    texto: 'O Educabem é uma organização sem fins lucrativos dedicada a democratizar o acesso à leitura por meio da doação de livros e a promover a inclusão e a saúde financeira de pessoas[...]
-  },
-  {
-    termos: ['voluntario', 'voluntariado', 'parceiro', 'ponto de coleta', 'trabalhar no educabem'],
-    texto: 'Toda ajuda é muito bem-vinda! Você pode participar das ações de triagem de livros e oficinas, ou tornar sua empresa um ponto de coleta parceiro. Acesse "Trabalhe Conosco / Seja Vol[...]
+    texto: 'Sim! O Educabem oferece artigos práticos, dicas rápidas e cursos introdutórios gratuitos para ajudar você a organizar o orçamento, sair das dívidas e começar a investir.'
   },
   {
     termos: ['olá', 'ola', 'oi', 'bom dia', 'boa tarde', 'boa noite'],
@@ -66,15 +49,12 @@ export default function Chatbot() {
   const [mensagens, setMensagens] = useState([
     { remetente: 'Educabem', texto: 'Olá! Como posso ajudar?' }
   ])
+
   const inputRef = useRef(null)
   const messagesEndRef = useRef(null)
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }
-
   useEffect(() => {
-    scrollToBottom()
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [mensagens])
 
   useEffect(() => {
@@ -86,17 +66,14 @@ export default function Chatbot() {
   const handleSubmit = (e) => {
     e.preventDefault()
     const texto = inputRef.current?.value.trim()
-    
+
     if (!texto) return
 
-    const novasMensagens = [
-      ...mensagens,
-      { remetente: 'Você', texto }
-    ]
-    
+    const novasMensagens = [...mensagens, { remetente: 'Você', texto }]
     const resposta = encontrarResposta(texto)
+
     novasMensagens.push({ remetente: 'Educabem', texto: resposta })
-    
+
     setMensagens(novasMensagens)
     if (inputRef.current) inputRef.current.value = ''
   }
@@ -109,7 +86,6 @@ export default function Chatbot() {
         aria-label="Abrir chatbot"
         onClick={() => setAberto(true)}
         className={aberto ? 'oculto' : ''}
-        title="Clique para abrir o chat"
       >
         <img src={chatbotIcon} alt="Chatbot EducaBem" className="chatbot-img" />
       </button>
@@ -121,6 +97,7 @@ export default function Chatbot() {
               <img src={chatbotIcon} alt="EducaBem" className="chatbot-header-img" />
               <span>EducaBem</span>
             </div>
+
             <button
               id="chatbot-close"
               type="button"
@@ -130,7 +107,7 @@ export default function Chatbot() {
               ×
             </button>
           </header>
-          
+
           <div id="chatbot-messages">
             {mensagens.map((msg, idx) => (
               <p key={idx}>
