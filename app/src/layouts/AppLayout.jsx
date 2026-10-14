@@ -66,7 +66,7 @@ export default function AppLayout() {
         <header className="topo">
           <div className="barra-m">
             <img className="logo-m" src={logo} alt="EducaBem" />
-            <button className="burger" aria-label={aberto ? 'Fechar menu' : 'Abrir menu'} aria-expanded={aberto} aria-controls="menu-principal" onClick={() => setAberto((x) => !x)}><i /><i /><i />[...]
+            <button className="burger" aria-label={aberto ? 'Fechar menu' : 'Abrir menu'} aria-expanded={aberto} aria-controls="menu-principal" onClick={() => setAberto((x) => !x)}><i /><i /><i /></button>
           </div>
           <div className="lado">
             <button className="sino" aria-label={`Notificações${naoLidas ? `, ${naoLidas} novas` : ''}`} aria-expanded={painel} onClick={alternarPainel}>
