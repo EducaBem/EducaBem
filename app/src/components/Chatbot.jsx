@@ -1,119 +1,130 @@
 import { useState, useRef, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import './Chatbot.css'
 import chatbotIcon from '../../../assets/chatbot.png'
+import { encontrarItem, MENSAGEM_INICIAL, RESPOSTA_PADRAO, SUGESTOES } from './Chatbot/chatbotResponses.js'
 
-const RESPOSTAS = [
-  {
-    termos: ['doar livro', 'doacao de livro', 'doar livros'],
-    texto: 'Que legal querer ajudar! Você pode doar livros didáticos, de literatura, gibis e paradidáticos em bom estado. Basta ir à seção "Doar Livros" no site, preencher o formulário com os dados e confirmar a entrega.'
-  },
-  {
-    termos: ['tipo de livro', 'tipos de livro', 'livros aceitos', 'aceitam livro'],
-    texto: 'Aceitamos livros de literatura infantil, juvenil e adulta, apostilas e livros didáticos atualizados, além de obras de negócios e finanças. Pedimos apenas que estejam em bom estado.'
-  },
-  {
-    termos: ['receber livro', 'pedir livro', 'livro emprestado', 'livros doados', 'catalogo'],
-    texto: 'Se você busca livros para leitura ou apoio nos estudos, acesse a aba "Catálogo de Livros" no site. Lá você pode buscar pelo título ou tema, fazer seu cadastro e solicitar o livro.'
-  },
-  {
-    termos: ['curso de financa', 'conteudo de financa', 'educacao financeira', 'financas gratis'],
-    texto: 'Sim! O Educabem oferece artigos práticos, dicas rápidas e cursos introdutórios gratuitos para ajudar você a organizar o orçamento, sair das dívidas e começar a investir.'
-  },
-  {
-    termos: ['olá', 'ola', 'oi', 'bom dia', 'boa tarde', 'boa noite'],
-    texto: 'Olá! Posso ajudar com doação de livros, catálogo, educação financeira, voluntariado ou informações sobre o Educabem.'
-  },
-  {
-    termos: ['obrigado', 'obrigada', 'valeu'],
-    texto: 'Por nada! Estou aqui para ajudar.'
-  }
-]
-
-function normalizar(texto) {
-  return texto.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-}
-
-function encontrarResposta(pergunta) {
-  const perguntaNormalizada = normalizar(pergunta)
-  const resposta = RESPOSTAS.find((item) =>
-    item.termos.some((termo) => perguntaNormalizada.includes(normalizar(termo)))
-  )
-
-  return resposta
-    ? resposta.texto
-    : 'Ainda não encontrei uma resposta para essa pergunta. Tente perguntar sobre doação de livros, catálogo, educação financeira, dívidas, voluntariado ou sobre o Educabem.'
-}
+const ATRASO_RESPOSTA = 450 // ms: "digitando..." antes de responder
 
 export default function Chatbot() {
   const [aberto, setAberto] = useState(false)
-  const [mensagens, setMensagens] = useState([
-    { remetente: 'Educabem', texto: 'Olá! Como posso ajudar?' }
-  ])
+  const [digitando, setDigitando] = useState(false)
+  const [mensagens, setMensagens] = useState([{ remetente: 'EducaBem', texto: MENSAGEM_INICIAL }])
 
   const inputRef = useRef(null)
   const messagesEndRef = useRef(null)
+  const botaoRef = useRef(null)
+  const timerRef = useRef(null)
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }, [mensagens])
+  }, [mensagens, digitando])
 
   useEffect(() => {
-    if (aberto) {
-      inputRef.current?.focus()
-    }
+    if (aberto) inputRef.current?.focus()
   }, [aberto])
+
+  useEffect(() => () => clearTimeout(timerRef.current), [])
+
+  const fechar = () => {
+    setAberto(false)
+    botaoRef.current?.focus() // devolve o foco ao botão flutuante
+  }
+
+  const enviar = (texto) => {
+    const pergunta = texto.trim()
+    if (!pergunta || digitando) return
+
+    setMensagens((atual) => [...atual, { remetente: 'Você', texto: pergunta }])
+    setDigitando(true)
+
+    const item = encontrarItem(pergunta)
+    timerRef.current = setTimeout(() => {
+      setMensagens((atual) => [
+        ...atual,
+        { remetente: 'EducaBem', texto: item ? item.texto : RESPOSTA_PADRAO, link: item?.link, semResposta: !item },
+      ])
+      setDigitando(false)
+    }, ATRASO_RESPOSTA)
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    const texto = inputRef.current?.value.trim()
-
-    if (!texto) return
-
-    const novasMensagens = [...mensagens, { remetente: 'Você', texto }]
-    const resposta = encontrarResposta(texto)
-
-    novasMensagens.push({ remetente: 'Educabem', texto: resposta })
-
-    setMensagens(novasMensagens)
+    const texto = inputRef.current?.value ?? ''
+    if (!texto.trim()) return
+    enviar(texto)
     if (inputRef.current) inputRef.current.value = ''
   }
+
+  const mostrarSugestoes = mensagens.length <= 1 || mensagens[mensagens.length - 1]?.semResposta
 
   return (
     <>
       <button
+        ref={botaoRef}
         id="chatbot-button"
         type="button"
         aria-label="Abrir chatbot"
+        aria-expanded={aberto}
+        aria-controls="chatbot-window"
         onClick={() => setAberto(true)}
         className={aberto ? 'oculto' : ''}
       >
-        <img src={chatbotIcon} alt="Chatbot EducaBem" className="chatbot-img" />
+        <span className="chatbot-fab-avatar">
+          <img src={chatbotIcon} alt="" className="chatbot-img" />
+        </span>
+        <span className="chatbot-fab-label">Posso ajudar?</span>
       </button>
 
       {aberto && (
-        <section id="chatbot-window" aria-label="Chat Educabem">
+        <section
+          id="chatbot-window"
+          aria-label="Chat EducaBem"
+          onKeyDown={(e) => { if (e.key === 'Escape') fechar() }}
+        >
           <header id="chatbot-header">
             <div className="chatbot-header-content">
-              <img src={chatbotIcon} alt="EducaBem" className="chatbot-header-img" />
-              <span>EducaBem</span>
+              <img src={chatbotIcon} alt="" className="chatbot-header-img" />
+              <span className="chatbot-header-texto">
+                <b>EducaBem</b>
+                <small>Tire suas dúvidas</small>
+              </span>
             </div>
 
-            <button
-              id="chatbot-close"
-              type="button"
-              aria-label="Fechar chatbot"
-              onClick={() => setAberto(false)}
-            >
+            <button id="chatbot-close" type="button" aria-label="Fechar chatbot" onClick={fechar}>
               ×
             </button>
           </header>
 
-          <div id="chatbot-messages">
+          <div id="chatbot-messages" role="log" aria-live="polite">
             {mensagens.map((msg, idx) => (
-              <p key={idx}>
-                <strong>{msg.remetente}:</strong> {msg.texto}
-              </p>
+              <div key={idx} className={`chatbot-msg ${msg.remetente === 'Você' ? 'msg-usuario' : 'msg-bot'}`}>
+                <p>
+                  <strong>{msg.remetente}:</strong> {msg.texto}
+                </p>
+                {msg.link && (
+                  <Link to={msg.link.to} className="chatbot-link" onClick={fechar}>
+                    {msg.link.rotulo} →
+                  </Link>
+                )}
+              </div>
             ))}
+
+            {digitando && (
+              <div className="chatbot-msg msg-bot">
+                <p className="chatbot-digitando" aria-label="EducaBem está digitando">
+                  <span /><span /><span />
+                </p>
+              </div>
+            )}
+
+            {mostrarSugestoes && !digitando && (
+              <div className="chatbot-sugestoes">
+                {SUGESTOES.map((s) => (
+                  <button key={s} type="button" onClick={() => enviar(s)}>{s}</button>
+                ))}
+              </div>
+            )}
             <div ref={messagesEndRef} />
           </div>
 
@@ -124,8 +135,10 @@ export default function Chatbot() {
               type="text"
               placeholder="Digite sua mensagem..."
               autoComplete="off"
+              maxLength={200}
+              aria-label="Mensagem para o chatbot"
             />
-            <button id="chatbot-send" type="submit">
+            <button id="chatbot-send" type="submit" disabled={digitando}>
               Enviar
             </button>
           </form>
