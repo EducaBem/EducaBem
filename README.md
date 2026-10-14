@@ -297,12 +297,6 @@ Para o site publicado se conectar ao banco, crie em **Settings → Secrets and v
 - O chatbot não entende perguntas fora do que foi cadastrado.
 - Não há testes automatizados. Antes de subir, valide com `npm run build` e um teste manual no modo de demonstração.
 
-## Equipe
-
-| Pessoa | Papel |
-| --- | --- |
-| _a preencher_ | _a preencher_ |
-
 ---
 
 <div align="center">
