@@ -120,10 +120,13 @@
       <h2>Livros Recomendados</h2>
     </div>
     
-    <div class="book-carousel">
+    <div class="book-carousel-wrap">
+      <button class="book-nav prev" type="button" aria-label="Livros anteriores">&#8249;</button>
+      <div class="book-carousel" tabindex="0" aria-label="Livros recomendados">
       <div class="book-card">
         <div class="book-cover-ph" style="background: #2563EB;">
-          <img src="assets/openbook.png" alt="Capa" style="width: 40px;">
+          <img class="book-cover" src="assets/livros/pai-rico-pai-pobre.jpg" alt="Capa do livro Pai Rico, Pai Pobre" loading="lazy" draggable="false" onerror="this.remove()">
+          <img src="assets/openbook.png" alt="" style="width: 40px;">
           <span class="ph-label">Finanças</span>
         </div>
         <h3>Pai Rico, Pai Pobre</h3>
@@ -132,7 +135,8 @@
 
       <div class="book-card">
         <div class="book-cover-ph" style="background: #b45309;">
-          <img src="assets/openbook.png" alt="Capa" style="width: 40px;">
+          <img class="book-cover" src="assets/livros/o-homem-mais-rico-da-babilonia.jpg" alt="Capa do livro O Homem Mais Rico da Babilônia" loading="lazy" draggable="false" onerror="this.remove()">
+          <img src="assets/openbook.png" alt="" style="width: 40px;">
           <span class="ph-label">Investimentos</span>
         </div>
         <h3>O Homem Mais Rico da Babilônia</h3>
@@ -141,14 +145,107 @@
 
       <div class="book-card">
         <div class="book-cover-ph" style="background: #0f7a38;">
-          <img src="assets/openbook.png" alt="Capa" style="width: 40px;">
+          <img class="book-cover" src="assets/livros/do-mil-ao-milhao.jpg" alt="Capa do livro Do Mil ao Milhão" loading="lazy" draggable="false" onerror="this.remove()">
+          <img src="assets/openbook.png" alt="" style="width: 40px;">
           <span class="ph-label">Planejamento</span>
         </div>
         <h3>Do Mil ao Milhão</h3>
         <span class="book-meta">Thiago Nigro</span>
       </div>
+
+      <div class="book-card">
+        <div class="book-cover-ph" style="background: #1e3a8a;">
+          <img class="book-cover" src="assets/livros/a-psicologia-financeira.jpg" alt="Capa do livro A Psicologia Financeira" loading="lazy" draggable="false" onerror="this.remove()">
+          <img src="assets/openbook.png" alt="" style="width: 40px;">
+          <span class="ph-label">Comportamento</span>
+        </div>
+        <h3>A Psicologia Financeira</h3>
+        <span class="book-meta">Morgan Housel</span>
+      </div>
+
+      <div class="book-card">
+        <div class="book-cover-ph" style="background: #9f1239;">
+          <img class="book-cover" src="assets/livros/me-poupe.jpg" alt="Capa do livro Me Poupe!" loading="lazy" draggable="false" onerror="this.remove()">
+          <img src="assets/openbook.png" alt="" style="width: 40px;">
+          <span class="ph-label">Planejamento</span>
+        </div>
+        <h3>Me Poupe!</h3>
+        <span class="book-meta">Nathalia Arcuri</span>
+      </div>
+
+      <div class="book-card">
+        <div class="book-cover-ph" style="background: #0e7490;">
+          <img class="book-cover" src="assets/livros/os-segredos-da-mente-milionaria.jpg" alt="Capa do livro Os Segredos da Mente Milionária" loading="lazy" draggable="false" onerror="this.remove()">
+          <img src="assets/openbook.png" alt="" style="width: 40px;">
+          <span class="ph-label">Mentalidade</span>
+        </div>
+        <h3>Os Segredos da Mente Milionária</h3>
+        <span class="book-meta">T. Harv Eker</span>
+      </div>
+
+      <div class="book-card">
+        <div class="book-cover-ph" style="background: #2563EB;">
+          <img class="book-cover" src="assets/livros/quem-pensa-enriquece.jpg" alt="Capa do livro Quem Pensa Enriquece" loading="lazy" draggable="false" onerror="this.remove()">
+          <img src="assets/openbook.png" alt="" style="width: 40px;">
+          <span class="ph-label">Mentalidade</span>
+        </div>
+        <h3>Quem Pensa Enriquece</h3>
+        <span class="book-meta">Napoleon Hill</span>
+      </div>
+
+      <div class="book-card">
+        <div class="book-cover-ph" style="background: #b45309;">
+          <img class="book-cover" src="assets/livros/o-investidor-inteligente.jpg" alt="Capa do livro O Investidor Inteligente" loading="lazy" draggable="false" onerror="this.remove()">
+          <img src="assets/openbook.png" alt="" style="width: 40px;">
+          <span class="ph-label">Investimentos</span>
+        </div>
+        <h3>O Investidor Inteligente</h3>
+        <span class="book-meta">Benjamin Graham</span>
+      </div>
+
+      <div class="book-card">
+        <div class="book-cover-ph" style="background: #0f7a38;">
+          <img class="book-cover" src="assets/livros/casais-inteligentes-enriquecem-juntos.jpg" alt="Capa do livro Casais Inteligentes Enriquecem Juntos" loading="lazy" draggable="false" onerror="this.remove()">
+          <img src="assets/openbook.png" alt="" style="width: 40px;">
+          <span class="ph-label">Finanças a dois</span>
+        </div>
+        <h3>Casais Inteligentes Enriquecem Juntos</h3>
+        <span class="book-meta">Gustavo Cerbasi</span>
+      </div>
+
+      <div class="book-card">
+        <div class="book-cover-ph" style="background: #1e3a8a;">
+          <img class="book-cover" src="assets/livros/dinheiro-os-segredos-de-quem-tem.jpg" alt="Capa do livro Dinheiro: Os Segredos de Quem Tem" loading="lazy" draggable="false" onerror="this.remove()">
+          <img src="assets/openbook.png" alt="" style="width: 40px;">
+          <span class="ph-label">Finanças pessoais</span>
+        </div>
+        <h3>Dinheiro: Os Segredos de Quem Tem</h3>
+        <span class="book-meta">Gustavo Cerbasi</span>
+      </div>
+
+      <div class="book-card">
+        <div class="book-cover-ph" style="background: #9f1239;">
+          <img class="book-cover" src="assets/livros/como-organizar-sua-vida-financeira.jpg" alt="Capa do livro Como Organizar Sua Vida Financeira" loading="lazy" draggable="false" onerror="this.remove()">
+          <img src="assets/openbook.png" alt="" style="width: 40px;">
+          <span class="ph-label">Organização</span>
+        </div>
+        <h3>Como Organizar Sua Vida Financeira</h3>
+        <span class="book-meta">Gustavo Cerbasi</span>
+      </div>
+
+      <div class="book-card">
+        <div class="book-cover-ph" style="background: #0e7490;">
+          <img class="book-cover" src="assets/livros/o-milionario-mora-ao-lado.jpg" alt="Capa do livro O Milionário Mora ao Lado" loading="lazy" draggable="false" onerror="this.remove()">
+          <img src="assets/openbook.png" alt="" style="width: 40px;">
+          <span class="ph-label">Hábitos</span>
+        </div>
+        <h3>O Milionário Mora ao Lado</h3>
+        <span class="book-meta">Thomas J. Stanley e William D. Danko</span>
+      </div>
+      </div>
+      <button class="book-nav next" type="button" aria-label="Próximos livros">&#8250;</button>
     </div>
-    <p class="drag-hint">(arraste para ver mais)</p>
+    <p class="drag-hint">(arraste ou use as setas para ver mais)</p>
   </div>
 </section>
 
@@ -222,5 +319,53 @@
     </div>
   </div>
 </footer>
+<script>
+// Carrossel de livros: setas e arrastar com o mouse (no celular vale o toque nativo).
+(function () {
+  var c = document.querySelector('.book-carousel');
+  if (!c) return;
+  var prev = document.querySelector('.book-nav.prev');
+  var next = document.querySelector('.book-nav.next');
+  var reduzir = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function passo() {
+    var card = c.querySelector('.book-card');
+    return card ? card.offsetWidth + 22 : 240;
+  }
+  function atualizar() {
+    prev.disabled = c.scrollLeft <= 4;
+    next.disabled = c.scrollLeft + c.clientWidth >= c.scrollWidth - 4;
+  }
+  function rolar(direcao) {
+    c.scrollBy({ left: direcao * passo() * 2, behavior: reduzir ? 'auto' : 'smooth' });
+  }
+
+  prev.addEventListener('click', function () { rolar(-1); });
+  next.addEventListener('click', function () { rolar(1); });
+  c.addEventListener('scroll', atualizar, { passive: true });
+  window.addEventListener('resize', atualizar);
+  c.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight') { rolar(1); e.preventDefault(); }
+    if (e.key === 'ArrowLeft') { rolar(-1); e.preventDefault(); }
+  });
+  atualizar();
+
+  var apertado = false, moveu = false, x0 = 0, esq0 = 0;
+  c.addEventListener('pointerdown', function (e) {
+    if (e.pointerType !== 'mouse') return;
+    apertado = true; moveu = false; x0 = e.clientX; esq0 = c.scrollLeft;
+  });
+  window.addEventListener('pointermove', function (e) {
+    if (!apertado) return;
+    var dx = e.clientX - x0;
+    if (Math.abs(dx) > 4) { moveu = true; c.classList.add('arrastando'); }
+    if (moveu) c.scrollLeft = esq0 - dx;
+  });
+  window.addEventListener('pointerup', function () {
+    apertado = false;
+    c.classList.remove('arrastando');
+  });
+})();
+</script>
 </body>
 </html>
