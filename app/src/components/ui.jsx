@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { STATUS, usuario, nivelDe } from '../mock.js'
 
 // Enquanto um diálogo está aberto: o topo (sino, avatar, barra) passa para trás do fundo escuro e a página não rola por baixo.
@@ -7,6 +7,27 @@ export function useDialogoAberto() {
     document.body.classList.add('com-dialogo')
     return () => document.body.classList.remove('com-dialogo')
   }, [])
+}
+
+// Diálogo acessível: Esc fecha, Tab/Shift+Tab ficam dentro da caixa e, ao fechar, o foco volta para quem abriu.
+export function useDialogoAcessivel(caixa, aoFechar) {
+  const fechar = useRef(aoFechar)
+  fechar.current = aoFechar
+  useEffect(() => {
+    const anterior = document.activeElement
+    const aoTeclar = (e) => {
+      if (e.key === 'Escape') { e.stopPropagation(); fechar.current(); return }
+      if (e.key !== 'Tab') return
+      const alvos = caixa.current?.querySelectorAll('a[href], button:not([disabled]), input:not([disabled]), select, textarea, [tabindex]:not([tabindex="-1"])')
+      if (!alvos?.length) return
+      const primeiro = alvos[0], ultimo = alvos[alvos.length - 1]
+      if (!caixa.current.contains(document.activeElement)) { e.preventDefault(); primeiro.focus() }
+      else if (e.shiftKey && document.activeElement === primeiro) { e.preventDefault(); ultimo.focus() }
+      else if (!e.shiftKey && document.activeElement === ultimo) { e.preventDefault(); primeiro.focus() }
+    }
+    window.addEventListener('keydown', aoTeclar, true)
+    return () => { window.removeEventListener('keydown', aoTeclar, true); anterior?.focus?.() }
+  }, [caixa])
 }
 
 export function Botao({ cor = 'verde', bloco, children, ...props }) {
@@ -19,8 +40,8 @@ export function ChipStatus({ status }) {
   const s = STATUS[status]
   return <span className={`chip chip-${s.cor}`}>{s.texto}</span>
 }
-export function BarraProgresso({ pct, cor }) {
-  return <div className={`barra ${cor ? `barra-${cor}` : ''}`} role="progressbar" aria-valuenow={Math.round(pct)} aria-valuemin={0} aria-valuemax={100}><i style={{ width: `${pct}%` }} /></div>
+export function BarraProgresso({ pct, cor, label = 'Progresso' }) {
+  return <div className={`barra ${cor ? `barra-${cor}` : ''}`} role="progressbar" aria-label={label} aria-valuenow={Math.round(pct)} aria-valuemin={0} aria-valuemax={100}><i style={{ width: `${pct}%` }} /></div>
 }
 
 // Foto do usuário (ou inicial, enquanto não há upload no Supabase Storage).
@@ -39,7 +60,7 @@ export function NivelBarra() {
     <div className="nivel-barra">
       <span className="n">Nível {nv.atual.n} · {nv.atual.nome}</span>
       <span className="p">{usuario.pontos} pts</span>
-      <BarraProgresso pct={nv.pct} cor="verde" />
+      <BarraProgresso pct={nv.pct} cor="verde" label="Progresso para o próximo nível" />
       <span className="r">{nv.prox ? `${nv.ganhos}/${nv.total} para o próximo nível!` : 'Nível máximo!'}</span>
     </div>
   )

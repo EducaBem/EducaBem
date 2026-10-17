@@ -1,8 +1,12 @@
+import { useRef } from 'react'
 import { Outlet } from 'react-router-dom'
+import { useAcessibilidadeDeRota } from '../components/acessibilidade.js'
 import logo from '../../../assets/logo-claro.png'
 import mascot from '../../../assets/mascot.png'
 
 export default function AuthLayout() {
+  const painelRef = useRef(null)
+  useAcessibilidadeDeRota(painelRef) // título da aba e foco no título do formulário a cada troca de tela
   return (
     <main className="auth">
       <section className="auth-esq">
@@ -11,7 +15,7 @@ export default function AuthLayout() {
         <i className="anel" />
         <i className="circ"><img src={mascot} alt="" /></i>
       </section>
-      <section className="auth-dir"><Outlet /></section>
+      <section className="auth-dir" ref={painelRef}><Outlet /></section>
     </main>
   )
 }

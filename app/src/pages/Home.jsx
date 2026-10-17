@@ -15,11 +15,11 @@ export default function Home() {
         <span className="masc-bola"><img className="masc" src={mascot} alt="" /></span>
         <h2>Olá, {usuario.primeiroNome}</h2>
         <p className="impacto-txt">Você já impactou {leitores} {leitores === 1 ? 'leitor' : 'leitores'} até agora.</p>
-        <div className="barra-home"><BarraProgresso pct={nv.pct} /></div>
+        <div className="barra-home"><BarraProgresso pct={nv.pct} label="Progresso para o próximo nível" /></div>
         <p className="nivel-txt">{nv.prox ? `Nível ${nv.atual.n} · faltam ${nv.faltam} pts pro Nível ${nv.prox.n}` : `Nível ${nv.atual.n} · nível máximo!`}</p>
         <Link to="/doar" className="btn btn-amarelo">Doar agora <Icone nome="arrow" tam={18} /></Link>
       </section>
-      <nav className="atalhos">{ATALHOS.map(([to, ic, nome]) => <Link key={to} to={to} className="atalho"><Icone nome={ic} tam={22} />{nome}</Link>)}</nav>
+      <nav className="atalhos" aria-label="Atalhos">{ATALHOS.map(([to, ic, nome]) => <Link key={to} to={to} className="atalho"><Icone nome={ic} tam={22} />{nome}</Link>)}</nav>
       <div className="sec-tit"><h2>Doações recentes</h2><Link to="/doacoes">ver todas</Link></div>
       {doacoes.length === 0 && <p className="vazio-lista">Você ainda não registrou nenhuma doação. <Link to="/doar">Doe seu primeiro livro</Link> e ganhe +50 pts.</p>}
       {doacoes.length > 0 && <ul className="lista">

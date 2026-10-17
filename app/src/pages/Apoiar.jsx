@@ -77,7 +77,7 @@ export function Ongs() {
       <section className="painel">
         {ONGS.map((o) => (
           <article key={o.nome} className={`ong ong-${o.cor}`}>
-            <h3><Icone nome={o.icone} tam={22} /> {o.nome}</h3>
+            <h2><Icone nome={o.icone} tam={22} /> {o.nome}</h2>
             <p>{o.texto}</p>
             <button className="btn btn-azul" onClick={() => navigate('/doar')}>Acessar ong</button>
           </article>

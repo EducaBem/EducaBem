@@ -20,7 +20,7 @@ export function Perfil() {
         <Avatar tam={130} />
         <h2 className="h-inter">{usuario.nome}</h2>
         <p className="mini"><span>{usuario.email}</span><span>Nível {nv.atual.n}</span></p>
-        <BarraProgresso pct={nv.pct} cor="verde" />
+        <BarraProgresso pct={nv.pct} cor="verde" label="Progresso para o próximo nível" />
         <Link className="btn-editar" to="/perfil/editar"><Icone nome="edit" tam={16} /> Editar informações</Link>
       </section>
       <h2 className="h-inter">Meu impacto</h2>

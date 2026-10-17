@@ -117,7 +117,7 @@ svg { flex: none; }
 .auth-card .btn { width: 100%; }
 .aceite { display: flex; gap: 10px; align-items: flex-start; font-size: 12.5px; line-height: 1.45; color: #475569; margin: 2px 0 18px; }
 .aceite input { width: 18px; height: 18px; margin: 1px 0 0; accent-color: var(--azul); flex: none; }
-.ou { display: flex; align-items: center; gap: 14px; margin: 18px 0 14px; color: #94A3B8; font-size: 12.5px; text-transform: uppercase; letter-spacing: .08em; }
+.ou { display: flex; align-items: center; gap: 14px; margin: 18px 0 14px; color: #64748B; font-size: 12.5px; text-transform: uppercase; letter-spacing: .08em; }
 .ou::before, .ou::after { content: ''; flex: 1; height: 1px; background: var(--line); }
 .btn-google { width: 100%; display: flex; gap: 10px; align-items: center; justify-content: center; height: 48px; border-radius: 999px; border: 1.5px solid #CBD5E1; background: #fff; font: 600 14.5px var(--texto); color: var(--slate); cursor: pointer; transition: background-color .15s, border-color .15s, box-shadow .15s; }
 .btn-google:hover { background: var(--surface-2); border-color: #94A3B8; box-shadow: var(--sh-1); }
@@ -169,7 +169,7 @@ svg { flex: none; }
 
 /* ---------- 6. TELAS ---------- */
 /* home */
-.ola { display: none; font: 400 30px var(--titulo); color: var(--marinho); }
+.ola { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; font: 400 30px var(--titulo); color: var(--marinho); } /* visível só no celular; na tela grande vale o título do cartão, mas continua para leitor de tela */
 .card-nivel { position: relative; background: linear-gradient(135deg, var(--azul) 0%, var(--azul-600) 100%); color: #fff; border-radius: var(--r-lg); padding: 28px 32px; display: grid; gap: 10px; box-shadow: var(--sh-2); overflow: visible; }
 .card-nivel h2 { font-size: 26px; }
 .card-nivel .masc-bola { position: absolute; right: 12px; top: -44px; width: 104px; height: 104px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #FFE066, var(--amarelo)); display: grid; place-items: center; box-shadow: 0 8px 20px rgba(7,25,65,.25); }
@@ -436,9 +436,9 @@ svg { flex: none; }
 .outro { display: grid; gap: 8px; font: 400 17px var(--titulo); } .outro span { display: flex; align-items: center; gap: 10px; border: 2px solid #CBD5E1; border-radius: 999px; padding: 10px 20px; transition: border-color .15s, box-shadow .15s; } .outro span:focus-within { border-color: var(--azul); box-shadow: 0 0 0 4px rgba(37,99,235,.18); } .outro i { font-style: normal; color: var(--muted); } .outro input { border: 0; background: transparent; flex: 1; font: 400 18px var(--titulo); min-width: 0; } .outro input:focus { outline: none; }
 .card-pag .btn { width: 100%; } .card-pag .dica { font-size: 14px; color: #475569; }
 .ong { border-radius: var(--r-md); background: #fff; padding: 0 0 20px; display: grid; gap: 12px; justify-items: end; overflow: hidden; font-size: 17px; box-shadow: var(--sh-1); }
-.ong h3 { width: 100%; padding: 12px 18px; color: #fff; font: 400 20px var(--titulo); display: flex; align-items: center; gap: 10px; } .ong p { padding: 6px 20px 8px; justify-self: stretch; font: 400 17px/1.4 var(--titulo); color: var(--slate); } .ong .btn { margin-right: 20px; }
-.ong-amarelo h3 { background: var(--amarelo); color: var(--marinho); }
-.ong-azul h3 { background: #1e40af; } .ong-verde h3 { background: #0f7a38; }
+.ong h2 { width: 100%; padding: 12px 18px; color: #fff; font: 400 20px var(--titulo); display: flex; align-items: center; gap: 10px; } .ong p { padding: 6px 20px 8px; justify-self: stretch; font: 400 17px/1.4 var(--titulo); color: var(--slate); } .ong .btn { margin-right: 20px; }
+.ong-amarelo h2 { background: var(--amarelo); color: var(--marinho); }
+.ong-azul h2 { background: #1e40af; } .ong-verde h2 { background: #0f7a38; }
 
 /* ---------- 7. RESPONSIVO ---------- */
 @media (max-height: 760px) {
@@ -465,8 +465,8 @@ svg { flex: none; }
   /* shell */
   .shell { grid-template-columns: 1fr; }
   html:has(.shell) { background: var(--azul); }
-  .menu { position: fixed; inset: 0 22% 0 0; height: 100dvh; transform: translateX(-105%); transition: transform .28s var(--ease); z-index: 40; }
-  .menu.aberto { transform: none; }
+  .menu { position: fixed; inset: 0 22% 0 0; height: 100dvh; transform: translateX(-105%); visibility: hidden; transition: transform .28s var(--ease), visibility 0s linear .28s; z-index: 40; }
+  .menu.aberto { transform: none; visibility: visible; transition: transform .28s var(--ease), visibility 0s; }
   .topo, .principal.azul .topo { background: transparent; flex-direction: column; align-items: stretch; padding: 0; }
   .topo .barra-m { display: flex; justify-content: space-between; align-items: center; background: var(--marinho); padding: 6px 18px; border-bottom: 3px solid rgba(255,255,255,.9); }
   .topo .logo-m { height: 58px; width: auto; }
@@ -483,7 +483,7 @@ svg { flex: none; }
   .principal.clara { background: #F5F8FF; }
 
   /* telas */
-  .ola { display: block; }
+  .ola { position: static; width: auto; height: auto; margin: 0; overflow: visible; clip: auto; clip-path: none; white-space: normal; }
   .card-nivel h2 { display: none; }
   .card-nivel { padding: 54px 22px 22px; border-radius: var(--r-lg); margin-top: 38px; }
   .card-nivel .masc-bola { width: 92px; height: 92px; top: -50px; right: 14px; } .card-nivel .masc { width: 60px; }
@@ -789,3 +789,62 @@ body.com-dialogo { overflow: hidden; }
 /* erro de login/cadastro */
 .auth-card .dica.erro { color: #991B1B; background: #FEE2E2; border-radius: 10px; padding: 10px 12px; font-weight: 600; margin: 4px 0 12px; }
 .btn:disabled { opacity: .6; cursor: not-allowed; }
+
+
+/* =====================================================================
+   TELAS GRANDES (monitor 1600px+)
+   ---------------------------------------------------------------------
+   Em monitor grande o app ficava um miolo pequeno no meio da tela: o
+   conteúdo trava em 960px e tudo é desenhado em px.
+   Solução: `zoom` no html por faixa de largura. Ele amplia o app inteiro
+   de forma uniforme (textos, ícones, avatares, cards, menu), então nada
+   precisa ser reescrito em rem. A largura "lógica" continua ~1450-1600px,
+   que é onde o layout foi desenhado.
+   ATENÇÃO: com zoom, 100vh também cresce junto. Por isso os usos de vh que
+   existem nessas telas dividem por var(--zoom).
+   Abaixo de 1600px nada muda (--zoom = 1).
+   ===================================================================== */
+:root { --zoom: 1; }
+@media (min-width: 1600px) { :root { --zoom: 1.1; } }
+@media (min-width: 1920px) { :root { --zoom: 1.25; } }
+@media (min-width: 2560px) { :root { --zoom: 1.6; } }
+@media (min-width: 3200px) { :root { --zoom: 2; } }
+@media (min-width: 3840px) { :root { --zoom: 2.4; } }
+
+@media (min-width: 1600px) {
+  html { zoom: var(--zoom); }
+
+  /* compensação do vh (ver aviso acima) */
+  .auth { min-height: calc(100vh / var(--zoom)); min-height: calc(100dvh / var(--zoom)); }
+  .shell { min-height: calc(100vh / var(--zoom)); }
+  .menu { height: calc(100vh / var(--zoom)); }
+  .doar-grade { min-height: calc((100vh / var(--zoom)) - 180px); }
+  .player.cheia .video { height: calc((100vh / var(--zoom)) - 118px); height: calc((100dvh / var(--zoom)) - 118px); }
+  #chatbot-window {
+    height: min(560px, calc((100vh / var(--zoom)) - 190px));
+    height: min(560px, calc((100dvh / var(--zoom)) - 190px));
+  }
+
+  /* o conteúdo ganha um pouco mais de largura (960 -> 1040) */
+  .conteudo { max-width: 1040px; }
+}
+
+/* =====================================================================
+   ACESSIBILIDADE
+   ===================================================================== */
+.sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; border: 0; }
+
+/* "Pular para o conteúdo": aparece só quando recebe foco pelo teclado */
+.pular { position: fixed; top: 8px; left: 8px; z-index: 1000; padding: 12px 20px; border: 0; border-radius: 10px; background: var(--amarelo); color: var(--marinho); font: 700 16px var(--texto); cursor: pointer; transform: translateY(-200%); }
+.pular:focus { transform: none; }
+
+/* alvos de foco apenas programático (título da tela, <main>) não precisam de anel */
+[tabindex="-1"]:focus { outline: none; box-shadow: none; }
+
+/* foco visível em qualquer fundo (claro, azul ou marinho): anel amarelo por dentro + marinho por fora */
+:is(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 3px solid var(--marinho);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 3px var(--amarelo);
+}
+[tabindex="-1"]:focus-visible { outline: none; box-shadow: none; }

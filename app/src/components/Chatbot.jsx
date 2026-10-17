@@ -64,7 +64,7 @@ export default function Chatbot() {
         ref={botaoRef}
         id="chatbot-button"
         type="button"
-        aria-label="Abrir chatbot"
+        aria-label="Posso ajudar? Abrir chat de ajuda"
         aria-expanded={aberto}
         aria-controls="chatbot-window"
         onClick={() => setAberto(true)}
@@ -112,7 +112,8 @@ export default function Chatbot() {
 
             {digitando && (
               <div className="chatbot-msg msg-bot">
-                <p className="chatbot-digitando" aria-label="EducaBem está digitando">
+                <p className="sr-only" role="status">EducaBem está digitando</p>
+                <p className="chatbot-digitando" aria-hidden="true">
                   <span /><span /><span />
                 </p>
               </div>

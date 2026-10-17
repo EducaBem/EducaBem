@@ -5,7 +5,7 @@ import { MODULOS, PTS, TRILHA, concluirModulo, concluirModuloBanco, estadoModulo
 import { Atividade } from '../components/atividades.jsx'
 import { PlayerYT } from '../components/PlayerYT.jsx'
 import mascote from '../../../assets/mascot.png'
-import { Icone, NivelBarra, useDialogoAberto } from '../components/ui.jsx'
+import { Icone, NivelBarra, useDialogoAberto, useDialogoAcessivel } from '../components/ui.jsx'
 import menino from '../../../assets/menino.png'
 import moeda from '../../../assets/moeda.png'
 import diamante from '../../../assets/diamante.png'
@@ -26,6 +26,7 @@ export function Trilha() {
   const [cx, cy] = mid(1, 2), [dx, dy] = mid(3, 4)
   return (
     <>
+      <h1 className="sr-only">Trilha de aprendizado</h1>
       <NivelBarra />
       <div className="pilula-trilha">{TRILHA.titulo.replace('–', '-')}</div>
       <div className="mapa-wrap">
@@ -54,10 +55,10 @@ export function Trilha() {
             const est = estadoModulo(i)
             return (
               <button key={m.id} className={`no no-${est} v${i}`} style={{ left: `${POS[i][0]}%`, top: `${POS[i][1]}%` }}
-                disabled={est === 'bloqueado'} aria-label={`Módulo ${i + 1}: ${m.titulo} (${est})`}
+                disabled={est === 'bloqueado'} aria-label={est === 'atual' ? `${i + 1} ${m.titulo} (módulo atual, você está aqui)` : `Módulo ${i + 1}: ${m.titulo} (${est})`}
                 onClick={() => navigate(`/trilha/${m.id}`)}>
-                {est === 'concluido' ? <Icone nome="check" tam={26} strokeWidth={3.2} /> : est === 'bloqueado' ? <Icone nome="lock" tam={22} /> : i + 1}
-                {est === 'atual' && <img className="heroi" src={menino} alt="Você está aqui" />}
+                {est === 'concluido' ? <Icone nome="check" tam={26} strokeWidth={3.2} /> : est === 'bloqueado' ? <Icone nome="lock" tam={22} /> : <>{i + 1}{' '}</>}
+                {est === 'atual' && <img className="heroi" src={menino} alt="" />}
                 <span className="rot">{m.titulo}{est === 'concluido' && <Estrelas n={progresso.estrelas[m.id] || 1} />}</span>
               </button>
             )
@@ -73,10 +74,12 @@ function ModalMissoes({ onClose }) {
   useDialogoAberto()
   const { nv, lista } = missoes()
   const ref = useRef(null)
+  const caixa = useRef(null)
+  useDialogoAcessivel(caixa, onClose) // Esc fecha, Tab fica no diálogo, foco volta ao botão "Ver missões"
   useEffect(() => { ref.current?.focus() }, [])
   return (
     <div className="modal-fundo" onClick={onClose}>
-      <div className="modal" role="dialog" aria-modal="true" aria-label="Missões" onClick={(e) => e.stopPropagation()}>
+      <div ref={caixa} className="modal" role="dialog" aria-modal="true" aria-label="Missões" onClick={(e) => e.stopPropagation()}>
         <h2>Você é {nv.atual.nome}!</h2>
         {nv.prox ? <>
           <p>Conclua as missões abaixo para se tornar <b className="ciano">{nv.prox.nome.toUpperCase()}</b>:</p>

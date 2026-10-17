@@ -17,6 +17,7 @@ export function Score() {
   const nv = nivelDe(usuario.pontos)
   return (
     <>
+      <h1 className="sr-only">Score do Bem</h1>
       <NivelBarra />
       <Abas ativa="score" />
       <section className="card-benef grande">

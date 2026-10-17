@@ -10,13 +10,14 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+<a class="pular" href="#conteudo">Pular para o conteúdo</a>
 
 <header>
   <div class="nav">
     <a href="#inicio" class="logo">
-      <img src="assets/logo-claro.png" alt="EducaBem Logo">
+      <img src="assets/logo-claro.png" alt="EducaBem, ir para o início">
     </a>
-    <nav class="links">
+    <nav class="links" id="menu-nav" aria-label="Principal">
       <a href="#inicio">Início</a>
       <a href="#funciona">Doação</a>
       <a href="#livros">Livros</a>
@@ -27,9 +28,13 @@
       <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10zm0 2c-4.4 0-9 2.2-9 5v3h18v-3c0-2.8-4.6-5-9-5z"/></svg>
       Logar
     </a>
+    <button type="button" class="nav-burger" aria-label="Abrir menu" aria-expanded="false" aria-controls="menu-nav">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true" focusable="false"><path class="b-abrir" d="M4 7h16M4 12h16M4 17h16"/><path class="b-fechar" d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
   </div>
 </header>
 
+<main id="conteudo" tabindex="-1">
 <section class="hero" id="inicio">
   <div class="wrap">
     <div class="hero-copy">
@@ -59,7 +64,7 @@
       <div class="steps">
         <div class="step step-blue">
           <div class="step-icon">
-            <img src="assets/openbook.png" alt="Separe os Livros">
+            <img src="assets/openbook.png" alt="">
           </div>
           <h3>1. Separe os Livros</h3>
           <p>Reúna os exemplares de educação financeira parados na sua estante que podem mudar a vida de outra pessoa.</p>
@@ -67,7 +72,7 @@
         
         <div class="step step-yellow">
           <div class="step-icon">
-            <img src="assets/van.png" alt="Entregue Pessoalmente">
+            <img src="assets/van.png" alt="">
           </div>
           <h3>2. Leve Até a Parceria</h3>
           <p>Escolha uma biblioteca ou ONG parceira mais próxima e entregue pessoalmente. Sem custos de frete.</p>
@@ -75,7 +80,7 @@
         
         <div class="step step-green">
           <div class="step-icon">
-            <img src="assets/handshake.png" alt="Acompanhe o Impacto">
+            <img src="assets/handshake.png" alt="">
           </div>
           <h3>3. Acompanhe o Impacto</h3>
           <p>Receba um aviso a cada etapa e saiba quando seu livro for entregue na instituição parceira.</p>
@@ -96,7 +101,7 @@
       <div class="dif-card">
         <span class="dif-tag">Acompanhamento</span>
         <div class="dif-card-head">
-          <img src="assets/destination.png" alt="Rastreio do Bem">
+          <img src="assets/destination.png" alt="">
           <h3>Rastreio do Bem</h3>
         </div>
         <p>Saiba exatamente onde o seu livro entregue está e quando ele chegar às mãos de quem vai estudar por ele.</p>
@@ -105,7 +110,7 @@
       <div class="dif-card">
         <span class="dif-tag">Incentivo</span>
         <div class="dif-card-head">
-          <img src="assets/medal.png" alt="Score do Bem">
+          <img src="assets/medal.png" alt="">
           <h3>Score do Bem</h3>
         </div>
         <p>Acompanhe sua pontuação ao participar das doações e ao concluir trilhas práticas de aprendizado financeiro.</p>
@@ -122,168 +127,200 @@
     
     <div class="book-carousel-wrap">
       <button class="book-nav prev" type="button" aria-label="Livros anteriores">&#8249;</button>
-      <div class="book-carousel" tabindex="0" aria-label="Livros recomendados">
-      <div class="book-card">
-        <div class="book-cover-ph" style="background: #2563EB;">
-          <img class="book-cover" src="assets/livros/pai-rico-pai-pobre.jpg" alt="Capa do livro Pai Rico, Pai Pobre" loading="lazy" draggable="false" onerror="this.remove()">
-          <img src="assets/openbook.png" alt="" style="width: 40px;">
+      <div class="book-carousel" tabindex="0" role="region" aria-roledescription="carrossel" aria-label="Livros recomendados">
+      <article class="book-card">
+        <div class="book-cover-ph" style="--capa: #2563EB;">
+          <img class="book-cover" src="assets/livros/pai-rico-pai-pobre.jpg" alt="Capa do livro Pai Rico, Pai Pobre" loading="lazy" decoding="async" draggable="false">
+          <img class="ph-icon" src="assets/openbook.png" alt="" aria-hidden="true">
           <span class="ph-label">Finanças</span>
+          <span class="ph-title" aria-hidden="true">Pai Rico, Pai Pobre</span>
+          <span class="ph-author" aria-hidden="true">Robert Kiyosaki</span>
         </div>
         <h3>Pai Rico, Pai Pobre</h3>
         <span class="book-meta">Robert Kiyosaki</span>
-      </div>
+      </article>
 
-      <div class="book-card">
-        <div class="book-cover-ph" style="background: #b45309;">
-          <img class="book-cover" src="assets/livros/o-homem-mais-rico-da-babilonia.jpg" alt="Capa do livro O Homem Mais Rico da Babilônia" loading="lazy" draggable="false" onerror="this.remove()">
-          <img src="assets/openbook.png" alt="" style="width: 40px;">
+      <article class="book-card">
+        <div class="book-cover-ph" style="--capa: #b45309;">
+          <img class="book-cover" src="assets/livros/o-homem-mais-rico-da-babilonia.jpg" alt="Capa do livro O Homem Mais Rico da Babilônia" loading="lazy" decoding="async" draggable="false">
+          <img class="ph-icon" src="assets/openbook.png" alt="" aria-hidden="true">
           <span class="ph-label">Investimentos</span>
+          <span class="ph-title" aria-hidden="true">O Homem Mais Rico da Babilônia</span>
+          <span class="ph-author" aria-hidden="true">George S. Clason</span>
         </div>
         <h3>O Homem Mais Rico da Babilônia</h3>
         <span class="book-meta">George S. Clason</span>
-      </div>
+      </article>
 
-      <div class="book-card">
-        <div class="book-cover-ph" style="background: #0f7a38;">
-          <img class="book-cover" src="assets/livros/do-mil-ao-milhao.jpg" alt="Capa do livro Do Mil ao Milhão" loading="lazy" draggable="false" onerror="this.remove()">
-          <img src="assets/openbook.png" alt="" style="width: 40px;">
+      <article class="book-card">
+        <div class="book-cover-ph" style="--capa: #0f7a38;">
+          <img class="book-cover" src="assets/livros/do-mil-ao-milhao.jpg" alt="Capa do livro Do Mil ao Milhão" loading="lazy" decoding="async" draggable="false">
+          <img class="ph-icon" src="assets/openbook.png" alt="" aria-hidden="true">
           <span class="ph-label">Planejamento</span>
+          <span class="ph-title" aria-hidden="true">Do Mil ao Milhão</span>
+          <span class="ph-author" aria-hidden="true">Thiago Nigro</span>
         </div>
         <h3>Do Mil ao Milhão</h3>
         <span class="book-meta">Thiago Nigro</span>
-      </div>
+      </article>
 
-      <div class="book-card">
-        <div class="book-cover-ph" style="background: #1e3a8a;">
-          <img class="book-cover" src="assets/livros/a-psicologia-financeira.jpg" alt="Capa do livro A Psicologia Financeira" loading="lazy" draggable="false" onerror="this.remove()">
-          <img src="assets/openbook.png" alt="" style="width: 40px;">
+      <article class="book-card">
+        <div class="book-cover-ph" style="--capa: #1e3a8a;">
+          <img class="book-cover" src="assets/livros/a-psicologia-financeira.jpg" alt="Capa do livro A Psicologia Financeira" loading="lazy" decoding="async" draggable="false">
+          <img class="ph-icon" src="assets/openbook.png" alt="" aria-hidden="true">
           <span class="ph-label">Comportamento</span>
+          <span class="ph-title" aria-hidden="true">A Psicologia Financeira</span>
+          <span class="ph-author" aria-hidden="true">Morgan Housel</span>
         </div>
         <h3>A Psicologia Financeira</h3>
         <span class="book-meta">Morgan Housel</span>
-      </div>
+      </article>
 
-      <div class="book-card">
-        <div class="book-cover-ph" style="background: #9f1239;">
-          <img class="book-cover" src="assets/livros/me-poupe.jpg" alt="Capa do livro Me Poupe!" loading="lazy" draggable="false" onerror="this.remove()">
-          <img src="assets/openbook.png" alt="" style="width: 40px;">
+      <article class="book-card">
+        <div class="book-cover-ph" style="--capa: #9f1239;">
+          <img class="book-cover" src="assets/livros/me-poupe.jpg" alt="Capa do livro Me Poupe!" loading="lazy" decoding="async" draggable="false">
+          <img class="ph-icon" src="assets/openbook.png" alt="" aria-hidden="true">
           <span class="ph-label">Planejamento</span>
+          <span class="ph-title" aria-hidden="true">Me Poupe!</span>
+          <span class="ph-author" aria-hidden="true">Nathalia Arcuri</span>
         </div>
         <h3>Me Poupe!</h3>
         <span class="book-meta">Nathalia Arcuri</span>
-      </div>
+      </article>
 
-      <div class="book-card">
-        <div class="book-cover-ph" style="background: #0e7490;">
-          <img class="book-cover" src="assets/livros/os-segredos-da-mente-milionaria.jpg" alt="Capa do livro Os Segredos da Mente Milionária" loading="lazy" draggable="false" onerror="this.remove()">
-          <img src="assets/openbook.png" alt="" style="width: 40px;">
+      <article class="book-card">
+        <div class="book-cover-ph" style="--capa: #0e7490;">
+          <img class="book-cover" src="assets/livros/os-segredos-da-mente-milionaria.jpg" alt="Capa do livro Os Segredos da Mente Milionária" loading="lazy" decoding="async" draggable="false">
+          <img class="ph-icon" src="assets/openbook.png" alt="" aria-hidden="true">
           <span class="ph-label">Mentalidade</span>
+          <span class="ph-title" aria-hidden="true">Os Segredos da Mente Milionária</span>
+          <span class="ph-author" aria-hidden="true">T. Harv Eker</span>
         </div>
         <h3>Os Segredos da Mente Milionária</h3>
         <span class="book-meta">T. Harv Eker</span>
-      </div>
+      </article>
 
-      <div class="book-card">
-        <div class="book-cover-ph" style="background: #2563EB;">
-          <img class="book-cover" src="assets/livros/quem-pensa-enriquece.jpg" alt="Capa do livro Quem Pensa Enriquece" loading="lazy" draggable="false" onerror="this.remove()">
-          <img src="assets/openbook.png" alt="" style="width: 40px;">
+      <article class="book-card">
+        <div class="book-cover-ph" style="--capa: #2563EB;">
+          <img class="book-cover" src="assets/livros/quem-pensa-enriquece.jpg" alt="Capa do livro Quem Pensa Enriquece" loading="lazy" decoding="async" draggable="false">
+          <img class="ph-icon" src="assets/openbook.png" alt="" aria-hidden="true">
           <span class="ph-label">Mentalidade</span>
+          <span class="ph-title" aria-hidden="true">Quem Pensa Enriquece</span>
+          <span class="ph-author" aria-hidden="true">Napoleon Hill</span>
         </div>
         <h3>Quem Pensa Enriquece</h3>
         <span class="book-meta">Napoleon Hill</span>
-      </div>
+      </article>
 
-      <div class="book-card">
-        <div class="book-cover-ph" style="background: #b45309;">
-          <img class="book-cover" src="assets/livros/o-investidor-inteligente.jpg" alt="Capa do livro O Investidor Inteligente" loading="lazy" draggable="false" onerror="this.remove()">
-          <img src="assets/openbook.png" alt="" style="width: 40px;">
+      <article class="book-card">
+        <div class="book-cover-ph" style="--capa: #b45309;">
+          <img class="book-cover" src="assets/livros/o-investidor-inteligente.jpg" alt="Capa do livro O Investidor Inteligente" loading="lazy" decoding="async" draggable="false">
+          <img class="ph-icon" src="assets/openbook.png" alt="" aria-hidden="true">
           <span class="ph-label">Investimentos</span>
+          <span class="ph-title" aria-hidden="true">O Investidor Inteligente</span>
+          <span class="ph-author" aria-hidden="true">Benjamin Graham</span>
         </div>
         <h3>O Investidor Inteligente</h3>
         <span class="book-meta">Benjamin Graham</span>
-      </div>
+      </article>
 
-      <div class="book-card">
-        <div class="book-cover-ph" style="background: #0f7a38;">
-          <img class="book-cover" src="assets/livros/casais-inteligentes-enriquecem-juntos.jpg" alt="Capa do livro Casais Inteligentes Enriquecem Juntos" loading="lazy" draggable="false" onerror="this.remove()">
-          <img src="assets/openbook.png" alt="" style="width: 40px;">
+      <article class="book-card">
+        <div class="book-cover-ph" style="--capa: #0f7a38;">
+          <img class="book-cover" src="assets/livros/casais-inteligentes-enriquecem-juntos.jpg" alt="Capa do livro Casais Inteligentes Enriquecem Juntos" loading="lazy" decoding="async" draggable="false">
+          <img class="ph-icon" src="assets/openbook.png" alt="" aria-hidden="true">
           <span class="ph-label">Finanças a dois</span>
+          <span class="ph-title" aria-hidden="true">Casais Inteligentes Enriquecem Juntos</span>
+          <span class="ph-author" aria-hidden="true">Gustavo Cerbasi</span>
         </div>
         <h3>Casais Inteligentes Enriquecem Juntos</h3>
         <span class="book-meta">Gustavo Cerbasi</span>
-      </div>
+      </article>
 
-      <div class="book-card">
-        <div class="book-cover-ph" style="background: #1e3a8a;">
-          <img class="book-cover" src="assets/livros/dinheiro-os-segredos-de-quem-tem.jpg" alt="Capa do livro Dinheiro: Os Segredos de Quem Tem" loading="lazy" draggable="false" onerror="this.remove()">
-          <img src="assets/openbook.png" alt="" style="width: 40px;">
+      <article class="book-card">
+        <div class="book-cover-ph" style="--capa: #1e3a8a;">
+          <img class="book-cover" src="assets/livros/dinheiro-os-segredos-de-quem-tem.jpg" alt="Capa do livro Dinheiro: Os Segredos de Quem Tem" loading="lazy" decoding="async" draggable="false">
+          <img class="ph-icon" src="assets/openbook.png" alt="" aria-hidden="true">
           <span class="ph-label">Finanças pessoais</span>
+          <span class="ph-title" aria-hidden="true">Dinheiro: Os Segredos de Quem Tem</span>
+          <span class="ph-author" aria-hidden="true">Gustavo Cerbasi</span>
         </div>
         <h3>Dinheiro: Os Segredos de Quem Tem</h3>
         <span class="book-meta">Gustavo Cerbasi</span>
-      </div>
+      </article>
 
-      <div class="book-card">
-        <div class="book-cover-ph" style="background: #9f1239;">
-          <img class="book-cover" src="assets/livros/como-organizar-sua-vida-financeira.jpg" alt="Capa do livro Como Organizar Sua Vida Financeira" loading="lazy" draggable="false" onerror="this.remove()">
-          <img src="assets/openbook.png" alt="" style="width: 40px;">
+      <article class="book-card">
+        <div class="book-cover-ph" style="--capa: #9f1239;">
+          <img class="book-cover" src="assets/livros/como-organizar-sua-vida-financeira.jpg" alt="Capa do livro Como Organizar Sua Vida Financeira" loading="lazy" decoding="async" draggable="false">
+          <img class="ph-icon" src="assets/openbook.png" alt="" aria-hidden="true">
           <span class="ph-label">Organização</span>
+          <span class="ph-title" aria-hidden="true">Como Organizar Sua Vida Financeira</span>
+          <span class="ph-author" aria-hidden="true">Gustavo Cerbasi</span>
         </div>
         <h3>Como Organizar Sua Vida Financeira</h3>
         <span class="book-meta">Gustavo Cerbasi</span>
-      </div>
+      </article>
 
-      <div class="book-card">
-        <div class="book-cover-ph" style="background: #0e7490;">
-          <img class="book-cover" src="assets/livros/o-milionario-mora-ao-lado.jpg" alt="Capa do livro O Milionário Mora ao Lado" loading="lazy" draggable="false" onerror="this.remove()">
-          <img src="assets/openbook.png" alt="" style="width: 40px;">
+      <article class="book-card">
+        <div class="book-cover-ph" style="--capa: #0e7490;">
+          <img class="book-cover" src="assets/livros/o-milionario-mora-ao-lado.jpg" alt="Capa do livro O Milionário Mora ao Lado" loading="lazy" decoding="async" draggable="false">
+          <img class="ph-icon" src="assets/openbook.png" alt="" aria-hidden="true">
           <span class="ph-label">Hábitos</span>
+          <span class="ph-title" aria-hidden="true">O Milionário Mora ao Lado</span>
+          <span class="ph-author" aria-hidden="true">Thomas J. Stanley e William D. Danko</span>
         </div>
         <h3>O Milionário Mora ao Lado</h3>
         <span class="book-meta">Thomas J. Stanley e William D. Danko</span>
-      </div>
+      </article>
       </div>
       <button class="book-nav next" type="button" aria-label="Próximos livros">&#8250;</button>
     </div>
-    <p class="drag-hint">(arraste ou use as setas para ver mais)</p>
+    <div class="carousel-controls">
+      <button type="button" class="book-pause">
+        <svg class="i-pausa" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
+        <svg class="i-play" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M8 5v14l11-7z"/></svg>
+        <span>Pausar movimento</span>
+      </button>
+      <p class="drag-hint">(arraste ou use as setas para ver mais)</p>
+    </div>
   </div>
 </section>
+</main>
 
 <footer>
   <div class="foot-accent-bar"></div>
   <div class="wrap foot-wrap">
     <div class="foot-top">
       <div class="foot-mascot-wrapper">
-        <img src="assets/mascot.png" alt="Mascote EducaBem" class="foot-mascot-img">
+        <img src="assets/mascot.png" alt="" class="foot-mascot-img">
       </div>
 
       <div class="foot-brand">
         <a href="#inicio" class="foot-logo-card">
-          <img src="assets/logo-claro.png" alt="EducaBem Logo">
+          <img src="assets/logo-claro.png" alt="EducaBem, ir para o início">
         </a>
         <p>Promovendo a educação financeira através do compartilhamento de livros e conhecimento com bibliotecas e ONGs parceiras.</p>
-        <div class="foot-social">
-          <a href="#" aria-label="Instagram">
+        <div class="foot-social" role="group" aria-label="Redes sociais">
+          <a href="#" aria-label="EducaBem no Instagram">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><circle cx="17.5" cy="6.5" r="1.5"></circle></svg>
           </a>
-          <a href="#" aria-label="Twitter">
+          <a href="#" aria-label="EducaBem no Twitter">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2s9 5 20 5a9.5 9.5 0 0 0-9-5.5c4.75 2.25 7-7 7-7"></path></svg>
           </a>
-          <a href="#" aria-label="LinkedIn">
+          <a href="#" aria-label="EducaBem no LinkedIn">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
           </a>
         </div>
       </div>
 
       <div class="foot-cols">
-        <div class="foot-col">
+        <nav class="foot-col" aria-label="Rodapé">
           <h4>Navegação</h4>
           <a href="#inicio">Início</a>
           <a href="#funciona">Doação</a>
           <a href="#livros">Livros</a>
           <a href="#diferenciais">Diferenciais</a>
           <a href="app/#/criar-conta">Trilhas e Aprendizado</a>
-        </div>
+        </nav>
         <div class="foot-col">
           <h4>Institucional</h4>
           <a href="app/#/ongs">ONGs parceiras</a>
@@ -320,36 +357,114 @@
   </div>
 </footer>
 <script>
-// Carrossel de livros: setas e arrastar com o mouse (no celular vale o toque nativo).
+// Carrossel de livros: setas, arrastar com o mouse (no celular vale o toque nativo)
+// e capas locais em assets/livros/ (aceita .jpg, .jpeg, .png, .webp ou .avif).
 (function () {
   var c = document.querySelector('.book-carousel');
   if (!c) return;
   var prev = document.querySelector('.book-nav.prev');
   var next = document.querySelector('.book-nav.next');
   var reduzir = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var btnPausa = document.querySelector('.book-pause');
+  var pausadoUsuario = false;   // botão "Pausar movimento": para de vez até o usuário retomar
+  if (btnPausa) {
+    if (reduzir) btnPausa.hidden = true;  // quem pediu menos movimento já recebe o carrossel parado
+    btnPausa.addEventListener('click', function () {
+      pausadoUsuario = !pausadoUsuario;
+      btnPausa.classList.toggle('pausado', pausadoUsuario);
+      btnPausa.querySelector('span').textContent = pausadoUsuario ? 'Retomar movimento' : 'Pausar movimento';
+    });
+  }
 
+  // --- capas: se o .jpg não existir, tenta as outras extensões; sem nenhuma, fica a capa tipográfica
+  var EXTS = ['jpg', 'jpeg', 'png', 'webp', 'avif'];
+  function proximaExtensao(img) {
+    var i = (parseInt(img.dataset.ext || '0', 10)) + 1;
+    if (i < EXTS.length) {
+      img.dataset.ext = i;
+      img.src = img.getAttribute('src').replace(/\.[a-z0-9]+$/i, '.' + EXTS[i]);
+    } else {
+      img.remove();
+    }
+  }
+  c.addEventListener('error', function (e) {
+    if (e.target.classList && e.target.classList.contains('book-cover')) proximaExtensao(e.target);
+  }, true);
+  c.querySelectorAll('.book-cover').forEach(function (img) {
+    if (img.complete && img.naturalWidth === 0) proximaExtensao(img); // já falhou antes do script rodar
+  });
+
+  // --- loop infinito automático -------------------------------------------------
+  // Os cards são clonados antes e depois (3 conjuntos idênticos). A posição fica sempre no
+  // conjunto do meio; ao chegar na borda, "pula" exatamente um conjunto, sem ninguém notar.
+  var VELOCIDADE = 45;          // px por segundo (ajuste aqui se quiser mais rápido/lento)
+  var PAUSA_APOS_INTERACAO = 2500; // ms parado depois de seta, toque, roda do mouse ou arraste
+  var originais = Array.prototype.slice.call(c.querySelectorAll('.book-card'));
+  var n = originais.length;
+  var W = 0;                    // largura de um conjunto (cards + gaps)
+
+  function clonar(antes) {
+    var frag = document.createDocumentFragment();
+    originais.forEach(function (card) {
+      var cl = card.cloneNode(true);
+      cl.setAttribute('aria-hidden', 'true');
+      cl.setAttribute('data-clone', '');
+      frag.appendChild(cl);
+    });
+    if (antes) c.insertBefore(frag, c.firstChild); else c.appendChild(frag);
+  }
+
+  function medir() {
+    var todos = c.querySelectorAll('.book-card');
+    W = todos[n].offsetLeft - todos[0].offsetLeft;   // início do 2º conjunto - início do 1º
+  }
+
+  var pos = 0, pausadoAte = 0, hover = false, foco = false, visivel = true, ultimo = 0;
+
+  function normalizar() {
+    if (!W) return;
+    var x = c.scrollLeft;
+    if (x >= 2 * W) c.scrollLeft = x - W;
+    else if (x < W) c.scrollLeft = x + W;
+    pos = c.scrollLeft;
+  }
+
+  function pausar(ms) { pausadoAte = performance.now() + ms; }
+
+  function quadro(t) {
+    var dt = Math.min(64, t - (ultimo || t)) / 1000;
+    ultimo = t;
+    var parado = pausadoUsuario || hover || foco || !visivel || document.hidden || apertado || t < pausadoAte;
+    if (parado) {
+      pos = c.scrollLeft;           // acompanha o que o usuário fez
+    } else {
+      pos += VELOCIDADE * dt;       // acumulador decimal: scrollLeft arredonda e travaria em velocidade baixa
+      if (pos >= 2 * W) pos -= W;
+      c.scrollLeft = pos;
+    }
+    requestAnimationFrame(quadro);
+  }
+
+  // --- setas: andam uma "página" (os cards inteiros que cabem na tela)
   function passo() {
     var card = c.querySelector('.book-card');
-    return card ? card.offsetWidth + 22 : 240;
-  }
-  function atualizar() {
-    prev.disabled = c.scrollLeft <= 4;
-    next.disabled = c.scrollLeft + c.clientWidth >= c.scrollWidth - 4;
+    if (!card) return 240;
+    var gap = parseFloat(getComputedStyle(c).columnGap) || 22;
+    return card.offsetWidth + gap;
   }
   function rolar(direcao) {
-    c.scrollBy({ left: direcao * passo() * 2, behavior: reduzir ? 'auto' : 'smooth' });
+    var visiveis = Math.max(1, Math.floor(c.clientWidth / passo()));
+    pausar(PAUSA_APOS_INTERACAO + 600);
+    c.scrollBy({ left: direcao * passo() * visiveis, behavior: reduzir ? 'auto' : 'smooth' });
   }
-
   prev.addEventListener('click', function () { rolar(-1); });
   next.addEventListener('click', function () { rolar(1); });
-  c.addEventListener('scroll', atualizar, { passive: true });
-  window.addEventListener('resize', atualizar);
   c.addEventListener('keydown', function (e) {
     if (e.key === 'ArrowRight') { rolar(1); e.preventDefault(); }
     if (e.key === 'ArrowLeft') { rolar(-1); e.preventDefault(); }
   });
-  atualizar();
 
+  // --- arrastar com o mouse (no celular vale o toque nativo)
   var apertado = false, moveu = false, x0 = 0, esq0 = 0;
   c.addEventListener('pointerdown', function (e) {
     if (e.pointerType !== 'mouse') return;
@@ -359,12 +474,89 @@
     if (!apertado) return;
     var dx = e.clientX - x0;
     if (Math.abs(dx) > 4) { moveu = true; c.classList.add('arrastando'); }
-    if (moveu) c.scrollLeft = esq0 - dx;
+    if (moveu) { c.scrollLeft = esq0 - dx; normalizar(); esq0 = c.scrollLeft + dx; }
   });
   window.addEventListener('pointerup', function () {
     apertado = false;
     c.classList.remove('arrastando');
+    pausar(800);
   });
+
+  if (reduzir || n === 0) {
+    // Quem pediu menos movimento recebe o carrossel manual de sempre (sem clones e sem auto-play).
+    var atualizar = function () {
+      prev.disabled = c.scrollLeft <= 4;
+      next.disabled = c.scrollLeft + c.clientWidth >= c.scrollWidth - 4;
+    };
+    c.addEventListener('scroll', atualizar, { passive: true });
+    window.addEventListener('resize', atualizar);
+    atualizar();
+    return;
+  }
+
+  clonar(true);
+  clonar(false);
+  c.classList.add('loop');
+  c.querySelectorAll('.book-cover').forEach(function (img) {
+    if (img.complete && img.naturalWidth === 0) proximaExtensao(img);
+  });
+
+  function iniciarPosicao() { medir(); c.scrollLeft = W; pos = W; }
+  iniciarPosicao();
+  window.addEventListener('load', iniciarPosicao);          // tamanhos finais depois das imagens
+  window.addEventListener('resize', function () {
+    var fracao = W ? (c.scrollLeft - W) / W : 0;
+    medir(); c.scrollLeft = W + fracao * W; pos = c.scrollLeft;
+  });
+
+  // interação do usuário: pausa e depois retoma de onde ele parou
+  c.addEventListener('mouseenter', function () { hover = true; });
+  c.addEventListener('mouseleave', function () { hover = false; pausar(400); });
+  c.addEventListener('focusin', function () { foco = true; });
+  c.addEventListener('focusout', function () { foco = false; });
+  c.addEventListener('touchstart', function () { pausar(PAUSA_APOS_INTERACAO + 100000); }, { passive: true });
+  c.addEventListener('touchend', function () { pausar(PAUSA_APOS_INTERACAO); }, { passive: true });
+  c.addEventListener('touchcancel', function () { pausar(PAUSA_APOS_INTERACAO); }, { passive: true });
+  c.addEventListener('wheel', function () { pausar(PAUSA_APOS_INTERACAO); }, { passive: true });
+
+  // depois que o usuário para de rolar, garante que a posição volte para o conjunto do meio
+  var t;
+  c.addEventListener('scroll', function () {
+    clearTimeout(t);
+    t = setTimeout(function () { if (!apertado) normalizar(); }, 160);
+  }, { passive: true });
+
+  // só anima enquanto a seção está na tela
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(function (es) { visivel = es[0].isIntersecting; }).observe(c);
+  }
+
+  requestAnimationFrame(quadro);
+})();
+</script>
+<script>
+// Menu do cabeçalho em telas pequenas: botão, Esc, clique fora e clique em um link fecham.
+(function () {
+  var btn = document.querySelector('.nav-burger');
+  var nav = document.getElementById('menu-nav');
+  if (!btn || !nav) return;
+  var desktop = window.matchMedia('(min-width: 881px)');
+  function definir(aberto, devolverFoco) {
+    nav.classList.toggle('aberto', aberto);
+    btn.classList.toggle('aberto', aberto);
+    btn.setAttribute('aria-expanded', aberto ? 'true' : 'false');
+    btn.setAttribute('aria-label', aberto ? 'Fechar menu' : 'Abrir menu');
+    if (!aberto && devolverFoco) btn.focus();
+  }
+  btn.addEventListener('click', function () { definir(!nav.classList.contains('aberto')); });
+  nav.addEventListener('click', function (e) { if (e.target.closest('a')) definir(false); });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && nav.classList.contains('aberto')) definir(false, true);
+  });
+  document.addEventListener('click', function (e) {
+    if (nav.classList.contains('aberto') && !e.target.closest('.nav')) definir(false);
+  });
+  (desktop.addEventListener ? desktop.addEventListener('change', function () { definir(false); }) : desktop.addListener(function () { definir(false); }));
 })();
 </script>
 </body>

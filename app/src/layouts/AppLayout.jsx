@@ -4,6 +4,7 @@ import logo from '../../../assets/logo-claro.png' // texto branco: lê direto so
 import { usuario, notificacoes, logado, sair, salvarConta, atualizarDoBanco, marcarLidasBanco } from '../mock.js'
 import { Avatar, Icone } from '../components/ui.jsx'
 import Chatbot from '../components/Chatbot.jsx'
+import { useAcessibilidadeDeRota } from '../components/acessibilidade.js'
 
 const ITENS = [['/home', 'home', 'Home'], ['/doar', 'package', 'Doar Livros'], ['/rastreio', 'pin', 'Rastreio do Bem'],
   ['/trilha', 'cap', 'Trilha'], ['/score', 'trophy', 'Score do Bem'], ['/perfil', 'user', 'Perfil']]
@@ -15,6 +16,11 @@ export default function AppLayout() {
   const [aberto, setAberto] = useState(false)
   const [painel, setPainel] = useState(false)
   const [, forcar] = useState(0)
+  const principalRef = useRef(null)
+  const menuRef = useRef(null)
+  const burgerRef = useRef(null)
+  const sinoRef = useRef(null)
+  useAcessibilidadeDeRota(principalRef)
   const { pathname } = useLocation()
   const navigate = useNavigate()
   const fechar = () => setAberto(false)
@@ -31,12 +37,18 @@ export default function AppLayout() {
     if (primeiraTela.current) { primeiraTela.current = false; return }
     atualizarDoBanco().then((ok) => ok && forcar((x) => x + 1))
   }, [pathname])
-  // Esc fecha o menu e o painel de notificações
+  // Esc fecha o menu e o painel de notificações e devolve o foco ao botão que os abriu
   useEffect(() => {
-    const onKey = (e) => { if (e.key === 'Escape') { setAberto(false); setPainel(false) } }
+    const onKey = (e) => {
+      if (e.key !== 'Escape') return
+      if (aberto) { setAberto(false); burgerRef.current?.focus() }
+      if (painel) { setPainel(false); sinoRef.current?.focus() }
+    }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [])
+  }, [aberto, painel])
+  // ao abrir o menu (celular), o foco vai para o primeiro item
+  useEffect(() => { if (aberto) menuRef.current?.querySelector('a, button')?.focus() }, [aberto])
 
   if (!logado()) return <Navigate to="/login" replace /> // sem sessão, volta ao login
 
@@ -48,10 +60,11 @@ export default function AppLayout() {
   )
   return (
     <div className="shell">
+      <button type="button" className="pular" onClick={() => principalRef.current?.focus()}>Pular para o conteúdo</button>
       {aberto && <div className="veu" onClick={fechar} />}
-      <aside id="menu-principal" className={`menu ${aberto ? 'aberto' : ''}`} aria-label="Menu principal">
+      <aside id="menu-principal" ref={menuRef} className={`menu ${aberto ? 'aberto' : ''}`} aria-label="Barra lateral">
         <img className="logo" src={logo} alt="EducaBem" />
-        <nav className="menu-nav">
+        <nav className="menu-nav" aria-label="Menu principal">
           {ITENS.map(link)}
           <span className="menu-sep">Mais</span>
           {EXTRAS.map(link)}
@@ -66,10 +79,10 @@ export default function AppLayout() {
         <header className="topo">
           <div className="barra-m">
             <img className="logo-m" src={logo} alt="EducaBem" />
-            <button className="burger" aria-label={aberto ? 'Fechar menu' : 'Abrir menu'} aria-expanded={aberto} aria-controls="menu-principal" onClick={() => setAberto((x) => !x)}><i /><i /><i /></button>
+            <button ref={burgerRef} className="burger" aria-label={aberto ? 'Fechar menu' : 'Abrir menu'} aria-expanded={aberto} aria-controls="menu-principal" onClick={() => setAberto((x) => !x)}><i /><i /><i /></button>
           </div>
           <div className="lado">
-            <button className="sino" aria-label={`Notificações${naoLidas ? `, ${naoLidas} novas` : ''}`} aria-expanded={painel} onClick={alternarPainel}>
+            <button ref={sinoRef} className="sino" aria-label={`Notificações${naoLidas ? `, ${naoLidas} novas` : ''}`} aria-expanded={painel} onClick={alternarPainel}>
               <Icone nome="bell" tam={22} />{naoLidas > 0 && <b className="ponto">{naoLidas}</b>}
             </button>
             <Link to="/perfil" aria-label="Perfil"><Avatar tam={46} /></Link>
@@ -84,7 +97,7 @@ export default function AppLayout() {
             </div>
           )}
         </header>
-        <main className="conteudo"><Outlet /></main>
+        <main className="conteudo" id="conteudo-principal" ref={principalRef} tabIndex={-1}><Outlet /></main>
         <Chatbot />
       </div>
     </div>
